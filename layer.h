@@ -1,7 +1,6 @@
 #ifndef LAYER_H
 #define LAYER_H
 
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include <unordered_map>
 #include <string>

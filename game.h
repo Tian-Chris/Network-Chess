@@ -1,9 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
-#include <SFML/Graphics.hpp>
 #include "cell.h"
 #include "layer.h"
-
 
 class Game {
 public:

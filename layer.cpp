@@ -1,7 +1,5 @@
 #include "layer.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
+#include "pch.h"
 
 // Layer constructor
 Layer::Layer(const std::string& fileName, float gridSize)

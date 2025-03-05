@@ -1,7 +1,5 @@
-#include <iostream>
-#include <fstream>
-#include <cstdlib> 
 #include "game.h"
+#include "pch.h"
 
 using namespace std;
 
