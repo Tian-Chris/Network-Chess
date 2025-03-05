@@ -1,6 +1,0 @@
-Foundation: No house has been built with a rotten foundation.
-Worm: You see things crawl beneath the earth's skin, and beneath yours.
-
-Epoch: The sages of eons past looked to the stars to chart the cycles of the heavens. For you a calendar will suffice.
-0: The beggining and the end. The leap month and the whole year.
-12: More than the end belongs to Arbitor of Fate. Much much more.
