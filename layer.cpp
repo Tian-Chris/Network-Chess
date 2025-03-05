@@ -1,5 +1,5 @@
-#include "layer.h"
-#include "pch.h"
+#include "header/layer.h"
+#include "header/pch.h"
 
 // Layer constructor
 Layer::Layer(const std::string& fileName, float gridSize)
@@ -9,7 +9,8 @@ Layer::Layer(const std::string& fileName, float gridSize)
 }
 
 void Layer::loadFromFile(const std::string& fileName) {
-    std::ifstream file(fileName);
+    std::string fullName = "text/" + fileName;
+    std::ifstream file(fullName);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file " << fileName << std::endl;
         return;

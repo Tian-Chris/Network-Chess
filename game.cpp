@@ -1,5 +1,5 @@
-#include "pch.h"
-#include "game.h"
+#include "header/pch.h"
+#include "header/game.h"
 
 //Constructor / Destructors
 Game::Game() 
