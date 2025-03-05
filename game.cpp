@@ -127,9 +127,8 @@ void Game::update()
 void Game::render()
 {
     this -> window -> clear(sf::Color::Blue);
-    this -> window -> draw(map);
-    this -> window -> draw(player);
     this -> drawGrid();
+    this -> window -> draw(player);
     this -> window -> display();
 }
 
