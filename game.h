@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SFML/Graphics.hpp>
+#include "cell.h"
 
 class Game {
 public:
@@ -24,10 +25,15 @@ private:
 
     //grid
     float gridSize;
+    std::vector<std::vector<Cell>> grid;
+    std::vector<sf::Texture> textures;  // Store different textures here
+    std::vector<sf::Sprite> sprites;
+    void drawGrid(); 
 
     //init
     void initVariable();
     void initWindow();
+    void initializeGrid();
 
     //objects
     sf::Texture mapTexture;

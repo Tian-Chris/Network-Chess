@@ -1,10 +1,4 @@
 #include "cell.h"
 
-    
-Cell::Cell(sf::Texture& texture, sf::Vector2f pos) 
-    : 
-    sprite(texture), 
-    brightness(1), 
-    position(pos) {
-}
-
+Cell::Cell() : brightness(1), position(0, 0), spriteType(0) {}
+Cell::Cell(sf::Vector2f pos, int type) : position(pos), brightness(1), spriteType(type) {}

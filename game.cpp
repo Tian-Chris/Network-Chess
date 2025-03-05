@@ -35,6 +35,7 @@ void Game::initVariable()
     zoom = 0;
 
     //grid 
+    initializeGrid();
 
     //map
     map.scale(sf::Vector2f(1, 1));
@@ -128,5 +129,38 @@ void Game::render()
     this -> window -> clear(sf::Color::Blue);
     this -> window -> draw(map);
     this -> window -> draw(player);
+    this -> drawGrid();
     this -> window -> display();
+}
+
+void Game::initializeGrid() {
+    textures.resize(2);
+    if (!textures[0].loadFromFile("images/grass.png") || !textures[1].loadFromFile("images/catbit.png")) {
+        //cout << "Error: Could not load textures!" << std::endl;
+        return;
+    }
+
+    // Resize grid
+    grid.resize(20);
+    for (int y = 0; y < 20; y++) {
+        grid[y].resize(40, Cell(sf::Vector2f(0, 0), 0));  // Resize each row to 40 cells, each having default values
+    }
+
+    // Initialize cells and sprites
+    for (int y = 0; y < 20; y++) {
+        for (int x = 0; x < 40; x++) {
+            grid[y][x] = Cell(sf::Vector2f(x * 100.f, y * 100.f), 0);  // Random type (0 or 1)
+
+            // Create sprite based on grid position and sprite type
+            sf::Sprite sprite(textures[grid[y][x].spriteType]);
+            sprite.setPosition(grid[y][x].position);
+            sprites.push_back(sprite);  // Store sprite separately
+        }
+    }
+}
+
+void Game::drawGrid() {
+    for (size_t i = 0; i < sprites.size(); i++) {
+        this -> window -> draw(sprites[i]);
+    }
 }
