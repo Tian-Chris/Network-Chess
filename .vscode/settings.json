@@ -49,6 +49,8 @@
         "streambuf": "cpp",
         "algorithm": "cpp",
         "iostream": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "fstream": "cpp",
+        "queue": "cpp"
     }
 }

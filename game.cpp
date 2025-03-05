@@ -9,15 +9,15 @@ Game::Game()
 
         //views
         viewStart(sf::FloatRect({0.f, 0.f},{1280.f, 800.f})),
-        viewZoom(sf::FloatRect({0.f, 0.f}, {400.f * aspectRatio, 400.f})),
-        viewDefault(sf::FloatRect({0.f, 0.f}, {200.f * aspectRatio, 200.f})),
+        viewZoom(sf::FloatRect({0.f, 0.f}, {800.f * aspectRatio, 800.f})),
+        viewDefault(sf::FloatRect({0.f, 0.f}, {400.f * aspectRatio, 400.f})),
 
         //map and sprite
         mapTexture("images/test.png"),
         map(mapTexture),
 
         //gridSize
-        gridSize(15.f),
+        gridSize(50.f),
 
         //objects
         player({gridSize, gridSize})
@@ -127,39 +127,13 @@ void Game::update()
 void Game::render()
 {
     this -> window -> clear(sf::Color::Blue);
-    this -> drawGrid();
+    backgroundLayer -> draw(*window); 
     this -> window -> draw(player);
     this -> window -> display();
 }
 
 void Game::initializeGrid() {
-    textures.resize(2);
-    if (!textures[0].loadFromFile("images/grass.png") || !textures[1].loadFromFile("images/catbit.png")) {
-        //cout << "Error: Could not load textures!" << std::endl;
-        return;
-    }
-
-    // Resize grid
-    grid.resize(20);
-    for (int y = 0; y < 20; y++) {
-        grid[y].resize(40, Cell(sf::Vector2f(0, 0), 0));  // Resize each row to 40 cells, each having default values
-    }
-
-    // Initialize cells and sprites
-    for (int y = 0; y < 20; y++) {
-        for (int x = 0; x < 40; x++) {
-            grid[y][x] = Cell(sf::Vector2f(x * 100.f, y * 100.f), 0);  // Random type (0 or 1)
-
-            // Create sprite based on grid position and sprite type
-            sf::Sprite sprite(textures[grid[y][x].spriteType]);
-            sprite.setPosition(grid[y][x].position);
-            sprites.push_back(sprite);  // Store sprite separately
-        }
-    }
+    // Create the layer with the file "layer.txt"
+    backgroundLayer = std::make_unique<Layer>("test.txt", gridSize);
 }
 
-void Game::drawGrid() {
-    for (size_t i = 0; i < sprites.size(); i++) {
-        this -> window -> draw(sprites[i]);
-    }
-}
