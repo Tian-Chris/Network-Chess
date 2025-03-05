@@ -1,5 +1,6 @@
 #include "header/pch.h"
 #include "header/game.h"
+#include "header/playerInput.h"
 
 //Constructor / Destructors
 Game::Game() 
@@ -70,48 +71,7 @@ void Game::pollEvents()
         //keyboard inputs
         else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
-            if (keyPressed->scancode == sf::Keyboard::Scan::Escape)
-            {
-                this -> window -> close();
-            }
-            if ((keyPressed->scancode == sf::Keyboard::Scan::Tab) && (zoom == 1))
-            {
-                this -> window -> setView(viewDefault);
-                zoom = 0;
-            }
-            else if ((keyPressed->scancode == sf::Keyboard::Scan::Tab) && (zoom == 0))
-            {
-                this -> window -> setView(viewZoom);
-                zoom = 1;
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scan::W)
-            {
-                player.move({0.f, -gridSize});
-                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                this -> window -> setView(viewDefault);                  
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scan::A)
-            {
-                player.move({-gridSize, 0.f});                    
-                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                this -> window -> setView(viewDefault);        
-            }
-            if (keyPressed->scancode == sf::Keyboard::Scan::S)
-            {
-                player.move({0.f, gridSize});
-                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                this -> window -> setView(viewDefault);                           
-            }                
-            if (keyPressed->scancode == sf::Keyboard::Scan::D)
-            {
-                player.move({gridSize, 0.f});
-                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                this -> window -> setView(viewDefault);                            
-            }                               
+            PlayerInput::handleKeyPress(*this, *keyPressed); // Call the input class which handles all button presses from now on
         }
     }
 }
