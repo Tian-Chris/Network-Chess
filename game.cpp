@@ -28,21 +28,25 @@ Game::Game()
 
 void Game::initVariable() 
 {
-    //windowptr
+    // window pointer
     this->window = nullptr;
 
-    //view
+    // view
     zoom = 0;
 
-    //grid 
+    // grid 
     initializeGrid();
 
-    //map
+    // map
     map.scale(sf::Vector2f(1, 1));
     map.setPosition(sf::Vector2f(0,0));
 
-    //objects
-    player.setOrigin({gridSize / 2.f, gridSize / 2.f});
+    // objects
+    player.setPosition({gridSize, gridSize});  // Start player at (1,1) in grid units
+
+    // Center the view **once** on the middle of the player
+    viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
+    viewZoom.setCenter(viewDefault.getCenter());
 }
 
 void Game::initWindow()
@@ -89,31 +93,31 @@ void Game::pollEvents()
             if (keyPressed->scancode == sf::Keyboard::Scan::W)
             {
                 player.move({0.f, -gridSize});
-                viewDefault.setCenter(player.getPosition()); 
-                viewZoom.setCenter(player.getPosition());  
+                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
                 this -> window -> setView(viewDefault);                  
             }
             if (keyPressed->scancode == sf::Keyboard::Scan::A)
             {
                 player.move({-gridSize, 0.f});                    
-                viewDefault.setCenter(player.getPosition()); 
-                viewZoom.setCenter(player.getPosition());  
+                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
                 this -> window -> setView(viewDefault);        
             }
             if (keyPressed->scancode == sf::Keyboard::Scan::S)
             {
                 player.move({0.f, gridSize});
-                viewDefault.setCenter(player.getPosition()); 
-                viewZoom.setCenter(player.getPosition());  
+                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
                 this -> window -> setView(viewDefault);                           
             }                
             if (keyPressed->scancode == sf::Keyboard::Scan::D)
             {
                 player.move({gridSize, 0.f});
-                viewDefault.setCenter(player.getPosition()); 
-                viewZoom.setCenter(player.getPosition());  
+                viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                viewZoom.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
                 this -> window -> setView(viewDefault);                            
-            }                                
+            }                               
         }
     }
 }
@@ -133,7 +137,7 @@ void Game::render()
 }
 
 void Game::initializeGrid() {
-    // Create the layer with the file "layer.txt"
+    // Create the map layer
     backgroundLayer = std::make_unique<Layer>("test.txt", gridSize);
 }
 

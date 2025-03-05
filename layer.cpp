@@ -10,7 +10,6 @@ Layer::Layer(const std::string& fileName, float gridSize)
     createSprites();
 }
 
-// Load data from file (first line for texture mapping, rest for grid)
 void Layer::loadFromFile(const std::string& fileName) {
     std::ifstream file(fileName);
     if (!file.is_open()) {
@@ -19,17 +18,20 @@ void Layer::loadFromFile(const std::string& fileName) {
     }
 
     std::string line;
-    
+
     // Read the first line for texture mapping
     std::getline(file, line);
     std::istringstream textureStream(line);
     int textureID;
     std::string textureFileName;
     while (textureStream >> textureID >> textureFileName) {
+        // Prepend the folder path
+        std::string fullPath = "images/" + textureFileName;
+
         // Load the texture and store it in the map
         sf::Texture texture;
-        if (!texture.loadFromFile(textureFileName)) {
-            std::cerr << "Error: Could not load texture: " << textureFileName << std::endl;
+        if (!texture.loadFromFile(fullPath)) {
+            std::cerr << "Error: Could not load texture: " << fullPath << std::endl;
             return;
         }
         textures[textureID] = texture;
@@ -53,6 +55,7 @@ void Layer::loadFromFile(const std::string& fileName) {
         grid.push_back(row);
     }
 }
+
 
 // Create sprites based on grid data and texture mapping
 void Layer::createSprites() {
