@@ -17,6 +17,9 @@ public:
     void update();
     void render();
 
+    //input reading object
+    friend class PlayerInput;
+
 private:
     //window
     sf::RenderWindow* window;
@@ -30,6 +33,7 @@ private:
     // std::vector<sf::Sprite> sprites;
     // void drawGrid(); 
     std::unique_ptr<Layer> backgroundLayer;
+    std::unique_ptr<Layer> obstacleLayer;
 
     //init
     void initVariable();
@@ -37,8 +41,6 @@ private:
     void initializeGrid();
 
     //objects
-    sf::Texture mapTexture;
-    sf::Sprite map;
     sf::RectangleShape player;
 
     //views

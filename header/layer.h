@@ -18,6 +18,8 @@ private:
     std::vector<std::vector<Cell>> grid;
     std::vector<sf::Sprite> sprites;
     std::unordered_map<int, sf::Texture> textures;  // Map texture IDs to textures
+
+    //pixel width of each grid
     float gridSize;
 };
 

@@ -13,10 +13,6 @@ Game::Game()
         viewZoom(sf::FloatRect({0.f, 0.f}, {800.f * aspectRatio, 800.f})),
         viewDefault(sf::FloatRect({0.f, 0.f}, {400.f * aspectRatio, 400.f})),
 
-        //map and sprite
-        mapTexture("images/test.png"),
-        map(mapTexture),
-
         //gridSize
         gridSize(50.f),
 
@@ -38,10 +34,6 @@ void Game::initVariable()
     // grid 
     initializeGrid();
 
-    // map
-    map.scale(sf::Vector2f(1, 1));
-    map.setPosition(sf::Vector2f(0,0));
-
     // objects
     player.setPosition({gridSize, gridSize});  // Start player at (1,1) in grid units
 
@@ -53,6 +45,7 @@ void Game::initVariable()
 void Game::initWindow()
 {
     this->window = new sf::RenderWindow(videoMode, "CTTSS");
+    this->window->setView(viewStart);
 }
 
 Game::~Game()
@@ -133,12 +126,14 @@ void Game::render()
 {
     this -> window -> clear(sf::Color::Blue);
     backgroundLayer -> draw(*window); 
+    obstacleLayer -> draw(*window); 
     this -> window -> draw(player);
     this -> window -> display();
 }
 
 void Game::initializeGrid() {
     // Create the map layer
-    backgroundLayer = std::make_unique<Layer>("test.txt", gridSize);
+    backgroundLayer = std::make_unique<Layer>("background.txt", gridSize);
+    obstacleLayer = std::make_unique<Layer>("obstacles.txt", gridSize);
 }
 

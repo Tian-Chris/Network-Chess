@@ -47,7 +47,7 @@ void Layer::loadFromFile(const std::string& fileName) {
             if (textures.find(type) != textures.end()) {
                 row.push_back(Cell(sf::Vector2f(x * gridSize, grid.size() * gridSize), type));
             } else {
-                row.push_back(Cell());  // Empty cell (type = -1)
+                row.push_back(Cell());  // Empty cell (type = 0)
             }
             x++;
         }
@@ -61,7 +61,7 @@ void Layer::createSprites() {
     for (size_t y = 0; y < grid.size(); y++) {
         for (size_t x = 0; x < grid[y].size(); x++) {
             // Only create a sprite if the cell's type is valid
-            if (grid[y][x].spriteType != -1) {
+            if (grid[y][x].spriteType != 0) {
                 // Get the corresponding texture from the textures map
                 sf::Sprite sprite(textures[grid[y][x].spriteType]);
                 sprite.setPosition(grid[y][x].position);
