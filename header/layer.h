@@ -23,4 +23,4 @@ private:
     float gridSize;
 };
 
-#endif // LAYER_H
+#endif

@@ -1,6 +1,7 @@
 #include "header/playerInput.h"
 #include "header/pch.h"
 
+//handles player input
 void PlayerInput::handleKeyPress(Game& game, const sf::Event::KeyPressed& keyPressed)
 {
     if (keyPressed.scancode == sf::Keyboard::Scan::Escape)

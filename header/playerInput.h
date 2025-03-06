@@ -7,4 +7,4 @@ public:
     static void handleKeyPress(Game& game, const sf::Event::KeyPressed& keyPressed);
 };
 
-#endif // PLAYER_INPUT_H
+#endif 

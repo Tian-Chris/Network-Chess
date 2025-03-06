@@ -1,6 +1,7 @@
 #include "header/pch.h"
 #include "header/game.h"
 #include "header/playerInput.h"
+#include "header/entities.h"
 
 //Constructor / Destructors
 Game::Game() 

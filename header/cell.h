@@ -16,4 +16,4 @@ class Cell {
         Cell(sf::Vector2f pos, int type);
     };
 
-#endif // CELL_H
+#endif
