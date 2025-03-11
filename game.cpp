@@ -1,6 +1,7 @@
 #include "header/pch.h"
 #include "header/game.h"
 #include "header/cell.h"
+#include "header/globals.h"
 
 //Constructor / Destructors
 Game::Game() 
@@ -15,7 +16,7 @@ Game::Game()
         viewDefault(sf::FloatRect({0.f, 0.f}, {400.f * aspectRatio, 400.f})),
 
         //gridSize
-        gridSize(50.f),
+        //gridSize(50.f),
 
         //objects
         player("images/catbit.png", 10, sf::Vector2f({gridSize, gridSize})),

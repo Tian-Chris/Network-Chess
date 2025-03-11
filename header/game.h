@@ -31,7 +31,7 @@ private:
     float aspectRatio;
 
     //grid
-    float gridSize;
+    //float gridSize;
     // std::vector<std::vector<Cell>> grid;
     // std::vector<sf::Texture> textures;  // Store different textures here
     // std::vector<sf::Sprite> sprites;
