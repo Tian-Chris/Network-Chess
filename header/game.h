@@ -1,7 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
-#include "cell.h"
 #include "layer.h"
+#include "entities.h"
+#include "playerInput.h"
+
 
 class Game {
 public:
@@ -17,8 +19,10 @@ public:
     void update();
     void render();
 
-    //input reading object
+    
+    //handlesinput
     friend class PlayerInput;
+    PlayerInput playerInput;
 
 private:
     //window
@@ -41,7 +45,7 @@ private:
     void initializeGrid();
 
     //objects
-    sf::RectangleShape player;
+    Entity player;
 
     //views
     sf::View viewStart;

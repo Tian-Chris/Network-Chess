@@ -1,7 +1,6 @@
 #include "header/pch.h"
 #include "header/game.h"
-#include "header/playerInput.h"
-#include "header/entities.h"
+#include "header/cell.h"
 
 //Constructor / Destructors
 Game::Game() 
@@ -19,7 +18,10 @@ Game::Game()
         gridSize(50.f),
 
         //objects
-        player({gridSize, gridSize})
+        player("images/catbit.png", 10, sf::Vector2f({gridSize, gridSize})),
+
+        //object that handles input
+        playerInput(this)
 {   
     this -> initVariable();
     this -> initWindow();
@@ -37,10 +39,10 @@ void Game::initVariable()
     initializeGrid();
 
     // objects
-    player.setPosition({gridSize, gridSize});  // Start player at (1,1) in grid units
+    //player.setPosition({gridSize, gridSize});  // Start player at (1,1) in grid units
 
     // Center the view **once** on the middle of the player
-    viewDefault.setCenter(player.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
+    viewDefault.setCenter(player.sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
     viewZoom.setCenter(viewDefault.getCenter());
 }
 
@@ -72,7 +74,7 @@ void Game::pollEvents()
         //keyboard inputs
         else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
         {
-            PlayerInput::handleKeyPress(*this, *keyPressed); // Call the input class which handles all button presses from now on
+            playerInput.handleKeyPress(*keyPressed); // Call the input class which handles all button presses from now on
         }
     }
 }
@@ -88,7 +90,7 @@ void Game::render()
     this -> window -> clear(sf::Color::Blue);
     backgroundLayer -> draw(*window); 
     obstacleLayer -> draw(*window); 
-    this -> window -> draw(player);
+    this -> window -> draw(player.sprite);
     this -> window -> display();
 }
 

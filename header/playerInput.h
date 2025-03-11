@@ -1,10 +1,18 @@
-#ifndef PLAYER_INPUT_H
-#define PLAYER_INPUT_H
-#include "game.h"
+#ifndef PLAYERINPUT_H
+#define PLAYERINPUT_H
+ 
+class Game;
 
 class PlayerInput {
 public:
-    static void handleKeyPress(Game& game, const sf::Event::KeyPressed& keyPressed);
+    // Constructor, takes a pointer to a Game object
+    PlayerInput(Game* game);
+
+    // Handles key press events
+    void handleKeyPress(const sf::Event::KeyPressed& keyPressed);
+    int checkValidMove(int x, int y);
+private:
+    Game* game;  // Pointer to a Game object
 };
 
-#endif 
+#endif // PLAYERINPUT_H

@@ -3,13 +3,16 @@
 
 class Entity {
 public:
-    Entity(std::string& spriteFileName, int hitPoints, sf::Vector2f pos);
+    Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos);
     sf::Texture spriteTexture;
     sf::Sprite sprite;
     int hp;
+    int x;
+    int y;
 
-    void Entity::draw();
-    void Entity::move(char input);
+    //empty
+    void draw();
+    void move(char input);
 };
 
 #endif
