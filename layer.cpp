@@ -37,37 +37,40 @@ void Layer::loadFromFile(const std::string& fileName) {
         }
         textures[textureID] = texture;
     }
-    cout << "loadFromFile middle \n";
+    //cout << "loadFromFile middle \n";
+    
     // Read the remaining lines for the grid
     while (std::getline(file, line)) {
-        std::vector<Cell> row;
+        std::vector<Cell*> row;  // Store pointers to cells
         std::istringstream stream(line);
         int type;
         float x = 0.0f;
-        cout << "loadFromFile preloop \n";
+        //cout << "loadFromFile preloop \n";
         while (stream >> type) {
-            cout << "grid.size: " << grid.size() <<"\n";
-            cout << "x " << x <<"\n";
-            cout << "type: " << type <<"\n";
+            //cout << "grid.size: " << grid.size() <<"\n";
+            //cout << "x " << x <<"\n";
+            //cout << "type: " << type <<"\n";
             // Only create a cell if the type is a valid texture ID
             if (textures.find(type) != textures.end()) {
-                Cell a(sf::Vector2f(x * gridSize, grid.size() * gridSize), type, &textures);
-                cout << "prepush";
-                row.push_back(a);
+                // Dynamically allocate a Cell object
+                Cell* newCell = new Cell(sf::Vector2f(x * gridSize, grid.size() * gridSize), type, &textures);
+                //cout << "prepush";
+                row.push_back(newCell);  // Store pointer in the row
             } else {
-                row.push_back(Cell());  // Empty cell (type = 0)
+                row.push_back(nullptr);  // Empty cell (nullptr)
             }
             x++;
-            cout << "out \n";
+            //cout << "out \n";
         }
-        cout << "out of loop \n";
+        //cout << "out of loop \n";
         length = x;
         height++;
         grid.push_back(row);
-        cout << "after push \n";
+        //cout << "after push \n";
     }
-    cout << "out \n";
+    //cout << "out \n";
 }
+
 
 
 // Create sprites based on grid data and texture mapping
@@ -88,19 +91,25 @@ void Layer::loadFromFile(const std::string& fileName) {
 
 // Draw the grid's sprites to the window
 void Layer::draw(sf::RenderWindow& window) {
-    cout << "draw start \n";
-    while (height > 0) {
-        while(length > 0)
-        {
-            window.draw(*grid[height][length].sprite);
-            length--;
+    for (size_t y = 0; y < grid.size(); ++y) {
+        for (size_t x = 0; x < grid[y].size(); ++x) {
+            // Only draw if the pointer is not null
+            if (grid[y][x] != nullptr) {
+                window.draw(*grid[y][x]->sprite);
+            }
         }
-        height--;
     }
-    cout << "draw end \n";
 }
 
 void Layer::changeCell()
 {
 
+}
+
+Layer::~Layer() {
+    for (auto& row : grid) {
+        for (auto& cell : row) {
+            delete cell;  // Free each dynamically allocated cell
+        }
+    }
 }

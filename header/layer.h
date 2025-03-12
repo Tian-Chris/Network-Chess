@@ -9,8 +9,9 @@
 class Layer {
 public:
     Layer(const std::string& fileName, float gridSize);
-    std::vector<std::vector<Cell>> grid;
+    std::vector<std::vector<Cell*>> grid;
     void draw(sf::RenderWindow& window);
+    ~Layer();
     
 private:
     void loadFromFile(const std::string& fileName);

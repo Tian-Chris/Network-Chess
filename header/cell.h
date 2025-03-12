@@ -9,7 +9,7 @@ class Cell {
         int brightness;
         int spriteType;  // Represents the type of sprite (or texture)
         sf::Sprite* sprite;
-        std::unordered_map<int, sf::Texture>* textures;
+        std::unordered_map<int, sf::Texture>* myTexture;
     
         // Default constructor
         Cell();
@@ -17,7 +17,9 @@ class Cell {
         // Constructor with position and sprite type
         Cell(sf::Vector2f pos, int type, std::unordered_map<int, sf::Texture>* textures);
         ~Cell();
-        void changeSprite(int newType);
+        void setSprite(int Type);
+        void setPosition(sf::Vector2f pos);
+        void deleteCell();
     };
 
 #endif

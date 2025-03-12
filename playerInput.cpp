@@ -69,11 +69,19 @@ void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
 
 int PlayerInput::checkValidMove(int y, int x)
 {
-    int spriteType = game->obstacleLayer->grid[y][x].spriteType;
-    //std::cout << "Checking cell (" << y << ", " << x << ") with spriteType: " << spriteType << std::endl;
-    if (game->obstacleLayer->grid[y][x].spriteType == 0)
-    {
+    // Check if the pointer is not null
+    if (game->obstacleLayer->grid[y][x] == nullptr) {
         return 1;
     }
-    return 0;
+    else
+    {
+        int spriteType = game->obstacleLayer->grid[y][x]->spriteType;
+        
+        // Check if the spriteType is not empty cell
+        if (spriteType != 0) {
+            return 0;  // invalid move (empty cell)
+        }
+    }
+
+    return 1;  // valid move (either non-empty cell or nullptr)
 }
