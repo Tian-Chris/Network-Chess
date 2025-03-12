@@ -9,18 +9,21 @@
 class Layer {
 public:
     Layer(const std::string& fileName, float gridSize);
-    void draw(sf::RenderWindow& window);
     std::vector<std::vector<Cell>> grid;
+    void draw(sf::RenderWindow& window);
     
 private:
     void loadFromFile(const std::string& fileName);
     void createSprites();
+    void changeCell();
 
-    std::vector<sf::Sprite> sprites;
+    //std::vector<sf::Sprite> sprites;
     std::unordered_map<int, sf::Texture> textures;  // Map texture IDs to textures
 
     //pixel width of each grid
     float gridSize;
+    int height;
+    int length;
 };
 
 #endif
