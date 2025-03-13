@@ -1,2 +1,2 @@
 #include "header/globals.h"
-float gridSize = 50.f;
+float gridSize = 32.f;

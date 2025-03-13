@@ -3,6 +3,8 @@
 #include "layer.h"
 #include "entities.h"
 #include "playerInput.h"
+#include "lightMap.h"
+
 
 
 class Game {
@@ -38,6 +40,7 @@ private:
     // void drawGrid(); 
     std::unique_ptr<Layer> backgroundLayer;
     std::unique_ptr<Layer> obstacleLayer;
+    LightMap light;
 
     //init
     void initVariable();

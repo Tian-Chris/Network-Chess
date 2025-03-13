@@ -3,6 +3,7 @@
 #include "header/cell.h"
 #include "header/globals.h"
 
+
 //Constructor / Destructors
 Game::Game() 
         : 
@@ -17,6 +18,7 @@ Game::Game()
 
         //gridSize
         //gridSize(50.f),
+        light(1280, 800),
 
         //objects
         player("images/catbit.png", 10, sf::Vector2f({gridSize, gridSize})),
@@ -78,6 +80,7 @@ void Game::pollEvents()
             playerInput.handleKeyPress(*keyPressed); // Call the input class which handles all button presses from now on
         }
     }
+    light.drawSource(sf::Vector2f(static_cast<float>(player.getX() * gridSize), static_cast<float>(player.getY() * gridSize)), 200.f);
 }
 
 //Update
@@ -88,10 +91,12 @@ void Game::update()
 
 void Game::render()
 {
+    sf::Sprite lightSprite(light.texture.getTexture());
     this -> window -> clear(sf::Color::Blue);
     backgroundLayer -> draw(*window); 
     obstacleLayer -> draw(*window); 
     this -> window -> draw(player.sprite);
+    this -> window -> draw(lightSprite, sf::BlendMultiply);
     this -> window -> display();
 }
 

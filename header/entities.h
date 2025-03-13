@@ -9,10 +9,14 @@ public:
     int hp;
     int x;
     int y;
+    int getX();
+    int getY();
 
     //empty
     void draw();
     void move(char input);
+
+private:
 };
 
 #endif

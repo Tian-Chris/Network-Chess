@@ -39,3 +39,13 @@ void Entity::move(char input)
             break;
     }
 }
+
+int Entity::getX()
+{
+    return x;
+}
+
+int Entity::getY()
+{
+    return y;
+}
