@@ -15,6 +15,7 @@ public:
     //empty
     void draw();
     void move(char input);
+    void reset(const std::string& filename);
 
 private:
 };

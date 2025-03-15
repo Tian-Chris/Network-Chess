@@ -23,6 +23,7 @@ Cell::Cell(sf::Vector2f pos, int type, std::unordered_map<int, sf::Texture>* tex
     }
 }
 
+
 Cell::~Cell()
 {
     delete sprite;

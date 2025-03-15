@@ -4,6 +4,7 @@
 #include "entities.h"
 #include "playerInput.h"
 #include "lightMap.h"
+#include "ui.h"
 
 
 
@@ -32,6 +33,9 @@ private:
     sf::VideoMode videoMode;
     float aspectRatio;
 
+    //windowvect
+    sf::Vector2f viewCoord;
+    
     //grid
     //float gridSize;
     // std::vector<std::vector<Cell>> grid;
@@ -47,8 +51,11 @@ private:
     void initWindow();
     void initializeGrid();
 
+    //UI
+    Ui Ui;
     //objects
     Entity player;
+    Entity zombie;
 
     //views
     sf::View viewStart;

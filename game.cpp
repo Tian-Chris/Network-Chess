@@ -21,7 +21,8 @@ Game::Game()
         light(1280, 800),
 
         //objects
-        player("images/catbit.png", 10, sf::Vector2f({gridSize, gridSize})),
+        player("images/player.png", 10, sf::Vector2f({gridSize, gridSize})),
+        zombie("images/enemy.png", 10, sf::Vector2f({128, 128})),
 
         //object that handles input
         playerInput(this)
@@ -47,12 +48,14 @@ void Game::initVariable()
     // Center the view **once** on the middle of the player
     viewDefault.setCenter(player.sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
     viewZoom.setCenter(viewDefault.getCenter());
+    viewCoord = {640.f, 400.f};
 }
 
 void Game::initWindow()
 {
     this->window = new sf::RenderWindow(videoMode, "CTTSS");
-    this->window->setView(viewStart);
+    this->window->setView(viewDefault);
+    Ui.UpdateHealth();
 }
 
 Game::~Game()
@@ -80,7 +83,10 @@ void Game::pollEvents()
             playerInput.handleKeyPress(*keyPressed); // Call the input class which handles all button presses from now on
         }
     }
+
+    viewCoord = player.sprite.getPosition();
     light.drawSource(sf::Vector2f(static_cast<float>(player.getX() * gridSize), static_cast<float>(player.getY() * gridSize)), 200.f);
+    Ui.SetPosition(viewCoord - sf::Vector2f(9 * gridSize, 5 * gridSize) - sf::Vector2f(16, 0));
 }
 
 //Update
@@ -96,7 +102,9 @@ void Game::render()
     backgroundLayer -> draw(*window); 
     obstacleLayer -> draw(*window); 
     this -> window -> draw(player.sprite);
+    this -> window -> draw(zombie.sprite);
     this -> window -> draw(lightSprite, sf::BlendMultiply);
+    this -> window -> draw(Ui.healthbar.sprite);
     this -> window -> display();
 }
 

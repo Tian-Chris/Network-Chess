@@ -17,6 +17,11 @@ void Entity::draw() {
 
 }
 
+void Entity::reset(const std::string& filename) {
+    spriteTexture.loadFromFile(filename);
+    sprite.setTexture(spriteTexture);
+}
+
 void Entity::move(char input)
 {
     //size of movement = 50 did not know how to do this better manually set it to 50 manually set gridspace
