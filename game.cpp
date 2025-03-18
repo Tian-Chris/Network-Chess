@@ -24,8 +24,10 @@ Game::Game()
         player("images/player.png", 10, sf::Vector2f({gridSize, gridSize})),
         zombie("images/enemy.png", 10, sf::Vector2f({128, 128})),
 
+        //initializes Ui
+        Ui(this),
         //object that handles input
-        playerInput(this)
+        playerInput()
 {   
     this -> initVariable();
     this -> initWindow();
@@ -41,6 +43,7 @@ void Game::initVariable()
     // grid 
     initializeGrid();
 
+    //Initializes Ui and adds Ui observer to Subject
     playerInput.inputReader.addObserver(&Ui.inputCatcher);
 
     // Center the view **once** on the middle of the player

@@ -25,7 +25,10 @@ public:
     
     //handlesinput
     friend class PlayerInput;
+    friend class Ui;
     PlayerInput playerInput;
+    //UI
+    Ui Ui;
 
 private:
     //window
@@ -51,8 +54,6 @@ private:
     void initWindow();
     void initializeGrid();
 
-    //UI
-    Ui Ui;
     //objects
     Entity player;
     Entity zombie;
