@@ -3,6 +3,7 @@
 #include "header/game.h"   
 #include "header/globals.h"
 
+//convert this into just a function instead of an object
 
 // Constructor that takes a pointer to a Game object
 PlayerInput::PlayerInput(Game* game)
@@ -25,6 +26,8 @@ void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
     }
     
     if (keyPressed.scancode == sf::Keyboard::Scan::W) {
+        //this subject will be observed by ui and networking
+        inputReader.notifyObservers("w");
         if(checkValidMove(game->player.y - 1, game->player.x))
         {
             game->player.move('w');
@@ -66,7 +69,7 @@ void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
 }
 
 
-
+//place this elsewhere
 int PlayerInput::checkValidMove(int y, int x)
 {
     // Check if the pointer is not null

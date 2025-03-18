@@ -51,6 +51,7 @@
         "iostream": "cpp",
         "deque": "cpp",
         "fstream": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "*.ipp": "cpp"
     }
 }

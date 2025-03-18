@@ -38,12 +38,10 @@ void Game::initVariable()
 
     // view
     zoom = 0;
-
     // grid 
     initializeGrid();
 
-    // objects
-    //player.setPosition({gridSize, gridSize});  // Start player at (1,1) in grid units
+    playerInput.inputReader.addObserver(&Ui.inputCatcher);
 
     // Center the view **once** on the middle of the player
     viewDefault.setCenter(player.sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
@@ -55,7 +53,9 @@ void Game::initWindow()
 {
     this->window = new sf::RenderWindow(videoMode, "CTTSS");
     this->window->setView(viewDefault);
-    Ui.UpdateHealth();
+
+    //set ui ptr
+    Ui.SetWindow(window);
 }
 
 Game::~Game()
@@ -86,7 +86,7 @@ void Game::pollEvents()
 
     viewCoord = player.sprite.getPosition();
     light.drawSource(sf::Vector2f(static_cast<float>(player.getX() * gridSize), static_cast<float>(player.getY() * gridSize)), 200.f);
-    Ui.SetPosition(viewCoord - sf::Vector2f(9 * gridSize, 5 * gridSize) - sf::Vector2f(16, 0));
+    Ui.SetPosition(viewCoord);
 }
 
 //Update
@@ -105,6 +105,7 @@ void Game::render()
     this -> window -> draw(zombie.sprite);
     this -> window -> draw(lightSprite, sf::BlendMultiply);
     this -> window -> draw(Ui.healthbar.sprite);
+    Ui.DrawInventory();
     this -> window -> display();
 }
 
