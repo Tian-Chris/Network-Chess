@@ -72,4 +72,15 @@ enum ViewMode {
     Full = 2, //entire map
 };
 
+class StartMenu {
+public:
+    StartMenu();
+    ~StartMenu();
+    sf::VideoMode videoMode;
+    sf::RenderWindow* window;
+    sf::Font font;
+    sf::Text text;
+
+};
+
 #endif
