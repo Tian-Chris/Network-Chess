@@ -2,14 +2,17 @@
 #include <iostream>
 #include <thread>
 #include <deque>
+#include "message.h"
+#include "connection.cpp"
+#include "tsqueue.cpp"
 
 using asio::ip::tcp;
 
 class Server {
 public:
 
-    Server(unsigned short port) : acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) {
-        Start();
+    Server(unsigned short port) : acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)) 
+    {
     }
 
     ~Server() {
@@ -46,8 +49,9 @@ public:
             [this](std::error_code ec, tcp::socket socket) {
                 if (!ec) {
                     std::cout << "Client connected!" << std::endl;
-                    std::shared_ptr<connection> connection = std::make_shared<connection>(connection::owner::server, io_context, std::move(socket), inputMessages);
-                    connections.push_back(std::move(connection));
+                    std::shared_ptr<Connection> connection = std::make_shared<Connection>(io_context, std::move(socket), inputMessages);
+                    Connections.push_back(std::move(connection));
+                    Connections.back() -> read();
                 }
                 else
                 {
@@ -57,11 +61,11 @@ public:
             });
     }
 
-    void sendMessage(std::shared_ptr<connection> client, const Message& myMessage) 
+    void sendMessage(std::shared_ptr<Connection> client, const Message& myMessage) 
     {
-        if (client && client->IsConnected())
+        if (client && client->isConnected())
         {
-            client->Send(myMessage);
+            client->send(myMessage);
         }
         else
         {
@@ -69,21 +73,37 @@ public:
         }
     }
 
-protected:
+//protected:
+public:
     asio::io_context io_context;
     tcp::acceptor acceptor;
     std::thread myThread; //needed to launch io_context in its own thread since io_context is blocking
 
     //build my own thread safe queue that takes message
     //Message will be an int for size and char for info
-    tsqueue<owned_message<Message>> inputMessages;
+    tsqueue inputMessages;
 
     //a deque of pointers toward connections need to build connection.
     std::deque<std::shared_ptr<Connection>> Connections;
 
 };
 
+using asio::ip::tcp;
+
 int main() {
     Server myServer(12345);
+    std::cout << "Server started on port 12345" << std::endl;
+    myServer.Start();
+
+    while(1)
+    {
+        //not working it seems
+        if(!(myServer.inputMessages.empty()))
+        {
+            std::cout << "hello" << std::endl;
+            std::cout << myServer.inputMessages.front().message[0] << std::endl;
+            std::cout << myServer.inputMessages.front().message[1] << std::endl;
+        }
+    }
     return 0;
 }
