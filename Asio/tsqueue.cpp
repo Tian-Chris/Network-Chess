@@ -17,7 +17,7 @@ public:
     tsqueue(const tsqueue&) = delete;
     tsqueue()
     {
-        
+
     }
     ~tsqueue() 
     { 
@@ -35,7 +35,6 @@ public:
         return queue.back();
     }
 
-    // Removes and returns item from front of Queue
     void pop_front()
     {
         std::scoped_lock lock(myMutex);

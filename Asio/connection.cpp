@@ -82,8 +82,8 @@ public:
                 if (!ec)
                 {
                     //finish this when fix tsqueue
-                    asio::async_write(socket, asio::buffer(&outputQueue.front().message, sizeof(&outputQueue.front().message)),
-                        [this](std::error_code ec, std::size_t length)
+                    asio::async_write(socket, asio::buffer(outputQueue.front().message.data(), outputQueue.front().message.size()),
+                    [this](std::error_code ec, std::size_t length)
                         {  
                             if(!ec)
                             {
@@ -109,7 +109,6 @@ public:
     }
 
     void read() {
-        //succeeding
         asio::async_read(socket, asio::buffer(&temp.size, sizeof(temp.size)),
         [this](std::error_code ec, std::size_t length)
         {	
@@ -117,8 +116,7 @@ public:
             {
                 temp.message.resize(temp.size);
                 std::cout << temp.size << std::endl;
-                //failing
-                asio::async_read(socket, asio::buffer(temp.message.data(), sizeof(temp.message)),
+                asio::async_read(socket, asio::buffer(temp.message.data(), temp.size),
                 [this](std::error_code ec, std::size_t length)
                 {	
                     if(!ec)
@@ -136,6 +134,7 @@ public:
             else
             {
                 std::cout << "Connection: read size failed" << std::endl;
+                std::cout << ec.message() << std::endl;
             }
         });
     }

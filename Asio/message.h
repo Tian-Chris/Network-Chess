@@ -6,17 +6,14 @@
 
 class Message {
 public:
-    Message(std::vector<std::string>& myVect) 
+    Message(const std::vector<char>& myVect) 
     {
         message = myVect;
     }
 
-    Message()
-    {
-
-    }
+    Message() = default;
     
-    void setMessage(std::vector<std::string>& input)
+    void setMessage(const std::vector<char>& input)
     {
         message = input;
     }
@@ -26,13 +23,13 @@ public:
         size = inputSize;
     }
 
-    uint32_t getSize()
+    uint32_t getSize() const
     {
         return size;
     }
 
-
     uint32_t size = 0;
-    std::vector<std::string> message;
+    std::vector<char> message;
 };
-#endif
+    
+    #endif

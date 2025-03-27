@@ -92,9 +92,9 @@ int main() {
     std::cout << "Connected!" << std::endl;
 
     Message myMessage;
-    std::vector<std::string> myString = {"hi", "hello"};
-    myMessage.setMessage(myString);
-    myMessage.setSize(2);
+    std::vector<char> myVect = {'h', 'e', 'l', 'l', 'o'};
+    myMessage.setMessage(myVect);
+    myMessage.setSize(5);
     
     std::this_thread::sleep_for(std::chrono::seconds(1));
 

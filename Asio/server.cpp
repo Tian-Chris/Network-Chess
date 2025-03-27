@@ -100,9 +100,12 @@ int main() {
         //not working it seems
         if(!(myServer.inputMessages.empty()))
         {
-            std::cout << "hello" << std::endl;
-            std::cout << myServer.inputMessages.front().message[0] << std::endl;
-            std::cout << myServer.inputMessages.front().message[1] << std::endl;
+            for(int i = 0; i < myServer.inputMessages.front().size; i++)
+            {
+                std::cout << myServer.inputMessages.front().size << std::endl;
+                std::cout << myServer.inputMessages.front().message[i] << std::endl;
+            }
+            myServer.inputMessages.pop_front();
         }
     }
     return 0;
