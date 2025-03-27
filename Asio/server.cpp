@@ -79,7 +79,6 @@ public:
     tcp::acceptor acceptor;
     std::thread myThread; //needed to launch io_context in its own thread since io_context is blocking
 
-    //build my own thread safe queue that takes message
     //Message will be an int for size and char for info
     tsqueue inputMessages;
 
@@ -97,15 +96,14 @@ int main() {
 
     while(1)
     {
-        //not working it seems
         if(!(myServer.inputMessages.empty()))
         {
             for(int i = 0; i < myServer.inputMessages.front().size; i++)
             {
-                std::cout << myServer.inputMessages.front().size << std::endl;
-                std::cout << myServer.inputMessages.front().message[i] << std::endl;
+                std::cout << myServer.inputMessages.front().message[i];
             }
             myServer.inputMessages.pop_front();
+            std::cout << std::endl;
         }
     }
     return 0;

@@ -115,7 +115,6 @@ public:
             if(!ec)
             {
                 temp.message.resize(temp.size);
-                std::cout << temp.size << std::endl;
                 asio::async_read(socket, asio::buffer(temp.message.data(), temp.size),
                 [this](std::error_code ec, std::size_t length)
                 {	
