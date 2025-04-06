@@ -1,64 +1,48 @@
-#ifndef TSQ_H
-#define TSQ_H
-#include <memory>
-#include <vector>
-#include <string>
-#include <deque>
-#include "message.h"
+#include "tsqueue.h"
 
-class tsqueue {
-public:
-    std::mutex myMutex;
-    std::deque<Message> queue;
-    std::condition_variable cvBlocking;
-    std::mutex muxBlocking;
+// Default constructor
+tsqueue::tsqueue() {}
 
-    //deletes copy constructor
-    tsqueue(const tsqueue&) = delete;
-    tsqueue()
-    {
+// Destructor
+tsqueue::~tsqueue() {
+    clear();
+}
 
-    }
-    ~tsqueue() 
-    { 
-        clear(); 
-    }
+// Access the front element
+Message& tsqueue::front() {
+    std::scoped_lock lock(myMutex);
+    return queue.front();
+}
 
-    Message& front()
-    {
-        std::scoped_lock lock(myMutex);
-        return queue.front();
-    }
-    Message& back()
-    {
-        std::scoped_lock lock(myMutex);
-        return queue.back();
-    }
+// Access the back element
+Message& tsqueue::back() {
+    std::scoped_lock lock(myMutex);
+    return queue.back();
+}
 
-    void pop_front()
-    {
-        std::scoped_lock lock(myMutex);
-        queue.pop_front();
-    }
+// Pop the front element
+void tsqueue::pop_front() {
+    std::scoped_lock lock(myMutex);
+    queue.pop_front();
+}
 
-    void push_back(const Message& item)
-    {
-        std::scoped_lock lock(myMutex);
-        queue.emplace_back(std::move(item));
+// Push an element to the back
+void tsqueue::push_back(const Message& item) {
+    std::scoped_lock lock(myMutex);
+    queue.emplace_back(item);
 
-        std::unique_lock<std::mutex> ul(muxBlocking);
-        cvBlocking.notify_one();
-    }
-    void clear()
-    {
-        std::scoped_lock lock(myMutex);
-        queue.clear();
-    }
-    bool empty()
-    {
-        std::scoped_lock lock(myMutex);
-        return queue.empty();
-    }
+    std::unique_lock<std::mutex> ul(muxBlocking);
+    cvBlocking.notify_one();
+}
 
-};
-#endif
+// Clear the queue
+void tsqueue::clear() {
+    std::scoped_lock lock(myMutex);
+    queue.clear();
+}
+
+// Check if the queue is empty
+bool tsqueue::empty() {
+    std::scoped_lock lock(myMutex);
+    return queue.empty();
+}
