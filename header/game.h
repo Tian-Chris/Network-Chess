@@ -6,7 +6,12 @@
 #include "lightMap.h"
 #include "ui.h"
 
-
+class GameServer : public Server {
+public:
+    GameServer(unsigned short port);
+    void do_accept() override;
+    void sendMap(std::shared_ptr<Connection> client);
+};
 
 class Game {
 public:
@@ -29,6 +34,9 @@ public:
     PlayerInput playerInput;
     //UI
     Ui Ui;
+
+    //add server/client
+    GameServer myServer;
 
 private:
     //window

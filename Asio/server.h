@@ -26,7 +26,7 @@ public:
     void Stop();
     
     // Accepts incoming client connections
-    void do_accept();
+    virtual void do_accept();
 
     // Sends a message to a specific client
     void sendMessage(std::shared_ptr<Connection> client, const Message& myMessage);
@@ -37,7 +37,7 @@ public:
     // List of active client connections
     std::deque<std::shared_ptr<Connection>> Connections;
 
-private:
+// private:
     asio::io_context io_context;  // IO context for async operations
     tcp::acceptor acceptor;       // Accepts incoming client connections
     std::thread myThread;         // IO context runs in a separate thread

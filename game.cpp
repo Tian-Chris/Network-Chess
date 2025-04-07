@@ -27,8 +27,12 @@ Game::Game()
         //initializes Ui
         Ui(this),
         //object that handles input
-        playerInput()
+        playerInput(),
+        myServer(12345)
+
 {   
+    std::cout << "Server started on port 12345" << std::endl;
+    myServer.Start();
     this -> initVariable();
     this -> initWindow();
 }
@@ -120,7 +124,6 @@ void Game::initializeGrid() {
 
 
 
-
 //Start Menu
 StartMenu::StartMenu(): videoMode({1280, 800}),
                         font("text/Arial.ttf"),
@@ -138,61 +141,42 @@ StartMenu::~StartMenu()
     delete window;
 }
 
-//button
 
-// class Button {
-//     public:
-//         Button (sf::Image* normal,sf::Image* clicked,std::string,sf::Vector2f location);
-//         void checkClick (sf::Vector2f);
-//         void setState(bool);
-//         void setText(std::string);
-//         bool getVar();
-//         sf::Sprite* getSprite();
-//         sf::String * getText();
-//     private:
-//         sf::Sprite normal;
-//         sf::Sprite clicked;
-//         sf::Sprite* currentSpr;
-//         sf::String String;
-//         bool current;
-//     };
-    
-//     Button::Button(sf::Image* normal,sf::Image* clicked,std::string words,sf::Vector2f location) {
-//         this->normal.SetImage(*normal);
-//         this->clicked.SetImage(*clicked);
-//         this->currentSpr=&this->normal;
-//         current =false;
-//         this->normal.SetPosition(location);
-//         this->clicked.SetPosition(location);
-//         String.SetText(words);
-//         String.SetPosition(location.x+3,location.y+3);
-//         String.SetSize(14);
-//     }
-//     void Button::checkClick (sf::Vector2f mousePos) {
-//         if (mousePos.x>currentSpr->GetPosition().x && mousePos.x<(currentSpr->GetPosition().x + currentSpr->GetSize().x)) {
-//             if(mousePos.y>currentSpr->GetPosition().y && mousePos.y<(currentSpr->GetPosition().y + currentSpr->GetSize().y)) {
-//                 setState(!current);
-//             }
-//         }
-//     }
-//     void Button::setState(bool which) {
-//         current = which;
-//         if (current) {
-//             currentSpr=&clicked;
-//             return;
-//         }
-//         currentSpr=&normal;
-//     }
-//     void Button::setText(std::string words) {
-//         String.SetText(words);
-//     }
-//     bool Button::getVar() {
-//         return current;
-//     }
-//     sf::Sprite* Button::getSprite() {
-//         return currentSpr;
-//     }
-    
-//     sf::String * Button::getText() {
-//         return &String;
-//     }
+
+//SERVER
+enum messageTypes {
+    mapBackground,
+    mapObstacles,
+    entityList,
+    entityUpdate
+};
+
+GameServer::GameServer(unsigned short port): Server(port) {};
+
+void GameServer::do_accept() {
+    acceptor.async_accept(
+        [this](std::error_code ec, tcp::socket socket) {
+            if (!ec) {
+                std::cout << "Client connected!" << std::endl;
+                std::shared_ptr<Connection> connection = std::make_shared<Connection>(io_context, std::move(socket), inputMessages);
+                Connections.push_back(std::move(connection));
+                sendMap(Connections.back());
+                Connections.back()->read();
+            } else {
+                std::cout << "SERVER: Connection Error: " << ec.message() << "\n";
+            }
+            do_accept();
+        });
+}
+
+void GameServer::sendMap(std::shared_ptr<Connection> client) {
+    Message mapBackground;
+    Message mapObstacles;
+    mapBackground.readFile("background.txt");
+    mapObstacles.readFile("obstacles.txt");
+    mapBackground.setType(messageTypes::mapBackground);
+    mapObstacles.setType(messageTypes::mapObstacles);
+    sendMessage(client, mapBackground);
+    sendMessage(client, mapObstacles);
+    std::cout << "mapsent";
+}

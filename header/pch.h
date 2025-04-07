@@ -10,4 +10,6 @@
 #include <sstream>
 #include <cstdlib> 
 #include <string>
+#include "../Asio/server.h"
+#include "../Asio/client.h"
 #endif

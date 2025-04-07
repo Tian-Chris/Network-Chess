@@ -51,20 +51,26 @@ void Connection::write() {
         [this](std::error_code ec, std::size_t length) {
             if (!ec) {
                 // Write message data
-                asio::async_write(socket, asio::buffer(outputQueue.front().message.data(), outputQueue.front().message.size()),
-                    [this](std::error_code ec, std::size_t length) {
-                        if (!ec) {
-                            outputQueue.pop_front();
-                            if (!outputQueue.empty()) {
-                                write();
-                            }
-                        } else {
-                            std::cout << "Connection: write message failed" << std::endl;
+                asio::async_write(socket, asio::buffer(&outputQueue.front().type, sizeof(outputQueue.front().type)),
+                [this](std::error_code ec, std::size_t length) {
+                    if (!ec) {
+                    asio::async_write(socket, asio::buffer(outputQueue.front().message.data(), outputQueue.front().message.size()),
+                        [this](std::error_code ec, std::size_t length) {
+                            if (!ec) {
+                                outputQueue.pop_front();
+                                if (!outputQueue.empty()) {
+                                    write();
+                                }
+                            } else {
+                                    std::cout << "Connection: write message failed" << std::endl;
+                                }
+                        });
+                    } else {
+                        std::cout << "Connection: write type failed" << std::endl;
                         }
-                    });
+                });
             } else {
                 std::cout << "Connection: write size failed" << std::endl;
-                socket.close();
             }
         });
 }
@@ -74,16 +80,24 @@ void Connection::read() {
     asio::async_read(socket, asio::buffer(&temp.size, sizeof(temp.size)),
         [this](std::error_code ec, std::size_t length) {
             if (!ec) {
-                temp.message.resize(temp.size);
-                asio::async_read(socket, asio::buffer(temp.message.data(), temp.size),
+                asio::async_read(socket, asio::buffer(&temp.type, sizeof(temp.type)),
                     [this](std::error_code ec, std::size_t length) {
                         if (!ec) {
-                            inputQueue.push_back(temp);
-                            read();
+                            temp.message.resize(temp.size);
+                            asio::async_read(socket, asio::buffer(temp.message.data(), temp.size),
+                                [this](std::error_code ec, std::size_t length) {
+                                    if (!ec) {
+                                        inputQueue.push_back(temp);
+                                        read();
+                                    } else {
+                                        std::cout << "Connection: read message failed" << std::endl;
+                                    }
+                                });
                         } else {
-                            std::cout << "Connection: read message failed" << std::endl;
+                            std::cout << "Connection: read type failed" << std::endl;
+                            std::cout << ec.message() << std::endl;
                         }
-                    });
+                        });
             } else {
                 std::cout << "Connection: read size failed" << std::endl;
                 std::cout << ec.message() << std::endl;
