@@ -10,7 +10,7 @@
 
 using asio::ip::tcp;
 
-class client {
+class Client {
 protected:
     asio::io_context io_context;
     std::thread myThread;
@@ -21,8 +21,8 @@ public:
     tsqueue inputMessages;
 
 public:
-    client();
-    ~client();
+    Client();
+    ~Client();
 
     bool connect(const std::string& host, const short port);
     void disconnect();

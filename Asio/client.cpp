@@ -2,15 +2,15 @@
 #include <iostream>
 #include <fstream>
 
-client::client() {
+Client::Client() {
     // Constructor (empty here but could initialize members if needed)
 }
 
-client::~client() {
+Client::~Client() {
     disconnect();
 }
 
-bool client::connect(const std::string& host, const short port) {
+bool Client::connect(const std::string& host, const short port) {
     try {
         asio::ip::tcp::resolver resolver(io_context);
         asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
@@ -27,7 +27,7 @@ bool client::connect(const std::string& host, const short port) {
     return true;
 }
 
-void client::disconnect() {
+void Client::disconnect() {
     if (isConnected()) {
         connection->disconnect();
     }
@@ -42,19 +42,19 @@ void client::disconnect() {
     connection.release();
 }
 
-bool client::isConnected() {
+bool Client::isConnected() {
     if (connection)
         return connection->isConnected();
     else
         return false;
 }
 
-void client::Send(const Message& message) {
+void Client::Send(const Message& message) {
     if (isConnected()) {
         connection->send(message);
     }
 }
 
-tsqueue& client::incoming() {
+tsqueue& Client::incoming() {
     return inputMessages;
 }

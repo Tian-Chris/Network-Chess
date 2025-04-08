@@ -1,6 +1,7 @@
-#include "header/game.h"
-#include "header/button.h"
-#include "header/pch.h"
+#include "game/game.h"
+#include "global/button.h"
+#include "global/pch.h"
+#include "game/network.h"
 using namespace std;
 
 
@@ -51,24 +52,34 @@ int main()
                     if(button1.getVar() == true)
                     {
                         StartMenu.window -> close();
-                        myState = state::GameServer;
+                        myState = state::GameServer; 
                     }
                     if(button2.getVar() == true)
                     {
                         StartMenu.window -> close();
-                        myState = state::IPInput;
+                        myState = state::GameClient; //should instead go to IPinputting 
                     }
                     StartMenu.window->display();
                 }
             }
         }
-        if(myState == state::IPInput) {}
 
-        if(myState == state::GameClient) {}
+        if(myState == state::IPInput) {}
+        
+        if(myState == state::GameClient) {
+            GameClient game;
+            while (game.getWindowIsOpen())
+            {
+                game.update();
+                game.render();
+            }
+            myState = state::TitleScreen;
+        }
+
         if(myState == state::GameServer)
         {
             //this is the game
-            Game game;
+            GameServer game;
             while (game.getWindowIsOpen())
             {
                 game.update();
