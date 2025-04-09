@@ -1,5 +1,4 @@
 #include "cell.h"
-#include "../global/pch.h"
 
 Cell::Cell() : brightness(1), position(0.f, 0.f), spriteType(0) 
 {

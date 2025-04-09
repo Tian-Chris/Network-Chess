@@ -1,5 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
+#include "../global/pch.h"
 
 using namespace std;
 

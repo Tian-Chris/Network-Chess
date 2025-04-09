@@ -1,6 +1,6 @@
 #ifndef LIGHT_H
 #define LIGHT_H
-#include "pch.h"
+#include "../global/pch.h"
 #include "layer.h"
 #include "../entities/entities.h"
 #include "../input/playerInput.h"

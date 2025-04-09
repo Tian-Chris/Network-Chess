@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/chris/cttss/build/_deps/freetype-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

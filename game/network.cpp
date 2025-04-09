@@ -1,19 +1,16 @@
 #include "network.h"
 
-GameServer::GameServer() : myServer(12345) //port address
-{   
-    std::cout << "Server started on port 12345" << std::endl;
-    myServer.Start();
-}
-
-GameClient::GameClient() : myClient()
-{   
-    std::cout << "client connected on port 12345" << std::endl;
-    myClient.connect("127.0.0.1", 12345); //connection
-}
-
+//SERVER
+enum messageTypes {
+    mapBackground,
+    mapObstacles,
+    entityList,
+    entityUpdate
+};
 
 CustomServer::CustomServer(unsigned short port): Server(port) {};
+
+CustomClient::CustomClient() : Client() {};
 
 void CustomServer::do_accept() {
     acceptor.async_accept(
@@ -43,10 +40,16 @@ void CustomServer::sendMap(std::shared_ptr<Connection> client) {
     std::cout << "mapsent";
 }
 
-//SERVER
-enum messageTypes {
-    mapBackground,
-    mapObstacles,
-    entityList,
-    entityUpdate
-};
+
+GameServer::GameServer() : myServer(12345) //port address
+{   
+    std::cout << "Server started on port 12345" << std::endl;
+    myServer.Start();
+}
+
+GameClient::GameClient() : myClient()
+{   
+    std::cout << "client connected on port 12345" << std::endl;
+    myClient.connect("127.0.0.1", 12345); //connection
+}
+

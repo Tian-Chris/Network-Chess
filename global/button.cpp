@@ -1,5 +1,4 @@
 #include "button.h"
-#include "pch.h"
 #include <functional>
 
 Button::Button(const char* normalStr, const char* clickedStr, std::string words, sf::Vector2f location)

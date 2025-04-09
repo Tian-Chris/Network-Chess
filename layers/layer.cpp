@@ -113,3 +113,32 @@ Layer::~Layer() {
         }
     }
 }
+
+void Layer::downloadMap(const string& mystring)
+{
+    std::ofstream file(mystring);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file for writing: " << mystring << std::endl;
+        return;
+    }
+
+    // Write the texture mapping
+    for (const auto& pair : textures) {
+        file << pair.first << " images/" << pair.second.getNativeHandle() << "\n";
+    }
+
+    // Write the grid data
+    for (const auto& row : grid) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            if (row[i] != nullptr) {
+                file << row[i]->spriteType;
+            }
+            if (i < row.size() - 1) {
+                file << " ";
+            }
+        }
+        file << "\n";
+    }
+
+    file.close();
+}

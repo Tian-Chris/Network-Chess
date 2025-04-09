@@ -1,5 +1,4 @@
 #include "entities.h"
-#include "../global/pch.h"
 #include "../global/globals.h"
 Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos) : 
     //not concatonated remember to add images/ elsewhere

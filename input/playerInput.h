@@ -2,6 +2,8 @@
 #define PLAYERINPUT_H
  
 #include "../global/observer.h"
+#include "../global/pch.h"
+
 
 class Game;
 

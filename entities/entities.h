@@ -1,5 +1,6 @@
 #ifndef ENTITIES_H
 #define ENTITIES_H
+#include "../global/pch.h"
 
 class Entity {
 public:

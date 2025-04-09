@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/cttss.dir/Asio/client.cpp.o"
+  "CMakeFiles/cttss.dir/Asio/client.cpp.o.d"
+  "CMakeFiles/cttss.dir/Asio/connection.cpp.o"
+  "CMakeFiles/cttss.dir/Asio/connection.cpp.o.d"
+  "CMakeFiles/cttss.dir/Asio/server.cpp.o"
+  "CMakeFiles/cttss.dir/Asio/server.cpp.o.d"
+  "CMakeFiles/cttss.dir/Asio/tsqueue.cpp.o"
+  "CMakeFiles/cttss.dir/Asio/tsqueue.cpp.o.d"
+  "CMakeFiles/cttss.dir/entities/entities.cpp.o"
+  "CMakeFiles/cttss.dir/entities/entities.cpp.o.d"
+  "CMakeFiles/cttss.dir/game/game.cpp.o"
+  "CMakeFiles/cttss.dir/game/game.cpp.o.d"
+  "CMakeFiles/cttss.dir/game/network.cpp.o"
+  "CMakeFiles/cttss.dir/game/network.cpp.o.d"
+  "CMakeFiles/cttss.dir/global/button.cpp.o"
+  "CMakeFiles/cttss.dir/global/button.cpp.o.d"
+  "CMakeFiles/cttss.dir/global/globals.cpp.o"
+  "CMakeFiles/cttss.dir/global/globals.cpp.o.d"
+  "CMakeFiles/cttss.dir/global/observer.cpp.o"
+  "CMakeFiles/cttss.dir/global/observer.cpp.o.d"
+  "CMakeFiles/cttss.dir/input/playerInput.cpp.o"
+  "CMakeFiles/cttss.dir/input/playerInput.cpp.o.d"
+  "CMakeFiles/cttss.dir/layers/cell.cpp.o"
+  "CMakeFiles/cttss.dir/layers/cell.cpp.o.d"
+  "CMakeFiles/cttss.dir/layers/layer.cpp.o"
+  "CMakeFiles/cttss.dir/layers/layer.cpp.o.d"
+  "CMakeFiles/cttss.dir/layers/lightMap.cpp.o"
+  "CMakeFiles/cttss.dir/layers/lightMap.cpp.o.d"
+  "CMakeFiles/cttss.dir/main.cpp.o"
+  "CMakeFiles/cttss.dir/main.cpp.o.d"
+  "CMakeFiles/cttss.dir/ui/ui.cpp.o"
+  "CMakeFiles/cttss.dir/ui/ui.cpp.o.d"
+  "bin/cttss"
+  "bin/cttss.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/cttss.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

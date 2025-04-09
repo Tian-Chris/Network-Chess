@@ -1,5 +1,4 @@
 #include "playerInput.h"
-#include "../global/pch.h"
 #include "../game/game.h"   
 #include "../global/globals.h"
 
@@ -9,7 +8,7 @@
 // Handles key press events
 void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
     if (keyPressed.scancode == sf::Keyboard::Scan::Escape) {
-        inputReader.can("Esc");
+        inputReader.notifyObservers("Esc");
         //game->window->close();
     }
     
