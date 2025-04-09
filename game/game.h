@@ -5,29 +5,91 @@
 #include "../input/playerInput.h"
 #include "../layers/lightMap.h"
 #include "../ui/ui.h"
-    
+
+/**
+ * @class Game
+ * @brief Main game class that handles the game loop, window management, and game state.
+ */
 class Game {
 public:
-    //Constructor / Desctructor
     Game();
     virtual ~Game();
 
-    //Accessors
+    /**
+     * @brief Checks if the window is still open.
+     * @return True if the window is open, false otherwise.
+     */
     const bool getWindowIsOpen() const;
 
-    //update
+    /**
+     * @brief Polls for input events (keyboard, mouse, etc.).
+     */
     void pollEvents();
+
+    /**
+     * @brief Updates the game state.
+     */
     void update();
+
+    /**
+     * @brief Renders the game objects to the window.
+     */
     void render();
+
+    /**
+     * @brief Adds an entity to the game (unfinished).
+     */
     void addEntity(); //unfinished
+
+    /**
+     * @brief Removes an entity from the game (unfinished).
+     */
     void removeEntity(); //unfinished
-    void saveMap(); //unfinished
+
+    /**
+     * @brief Loads the game map (unfinished).
+     */
+    void loadMap(); //unfinished
+
+    /**
+     * @brief Saves the game map (unfinished).
+     */
+    void saveMap();
+
+    /**
+     * @brief Loads the entity list (unfinished).
+     */
+    void loadEntityList(); //unfinished
+
+    /**
+     * @brief Loads a specific entity (unfinished).
+     */
+    void loadEntity(); //unfinished
+
+    /**
+     * @brief Sends the entity list (unfinished).
+     */
     void sendEntityList(); //unfinished
+
+    /**
+     * @brief Updates the entity state (unfinished).
+     */
     void updateEntity(); //unfinishedd
     
     //handlesinput
+    /**
+     * @brief Handles player input.
+     */
     friend class PlayerInput;
+
+    /**
+     * @brief Handles UI interactions.
+     */
     friend class Ui;
+
+    /**
+     * @brief Handles player input.
+     */
     PlayerInput playerInput;
     //UI
     Ui Ui;
@@ -55,8 +117,19 @@ protected:
     LightMap light;
 
     //init
+    /**
+     * @brief Initializes game variables.
+     */
     void initVariable();
+
+    /**
+     * @brief Initializes the game window.
+     */
     void initWindow();
+
+    /**
+     * @brief Initializes the game grid.
+     */
     void initializeGrid();
 
     //objects

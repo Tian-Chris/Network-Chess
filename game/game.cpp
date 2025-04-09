@@ -114,6 +114,7 @@ void Game::render()
     this -> window -> draw(Ui.healthbar.sprite);
     Ui.DrawInventory();
     this -> window -> display();
+    saveMap();
 }
 
 void Game::initializeGrid() {
@@ -123,11 +124,17 @@ void Game::initializeGrid() {
 }
 
 void Game::saveMap() {
-    backgroundLayer->downloadMap("Background.txt");
-    obstacleLayer->downloadMap("Obstacles.txt");
+    backgroundLayer->saveLayer("BackgroundTest.txt");
+    obstacleLayer->saveLayer("ObstaclesTest.txt");
 }
 
-//Start Menu
+
+void Game::loadMap() {
+    backgroundLayer->loadFromFile("Background.txt");
+    obstacleLayer->loadFromFile("Obstacles.txt");
+}
+
+// Start Menu
 StartMenu::StartMenu(): videoMode({1280, 800}),
                         font("text/Arial.ttf"),
                         text(font)

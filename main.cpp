@@ -68,6 +68,7 @@ int main()
         
         if(myState == state::GameClient) {
             GameClient game;
+            
             while (game.getWindowIsOpen())
             {
                 game.update();
@@ -78,7 +79,6 @@ int main()
 
         if(myState == state::GameServer)
         {
-            //this is the game
             GameServer game;
             while (game.getWindowIsOpen())
             {

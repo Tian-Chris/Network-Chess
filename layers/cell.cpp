@@ -1,18 +1,17 @@
 #include "cell.h"
 
-Cell::Cell() : brightness(1), position(0.f, 0.f), spriteType(0) 
+Cell::Cell() : brightness(1), position(0.f, 0.f), spriteType(0), sprite(nullptr), myTexture(nullptr)
 {
-    sf::Sprite* sprite = nullptr;
-    std::unordered_map<int, sf::Texture>* myTexture = nullptr;
+    // Default constructor
 }
 
-Cell::Cell(sf::Vector2f pos, int type, std::unordered_map<int, sf::Texture>* textures)
-    : position(pos), brightness(1), spriteType(type), myTexture(textures){
+Cell::Cell(sf::Vector2f pos, int type, std::unordered_map<int, sf::Texture>& textures)
+    : position(pos), brightness(1), spriteType(type), myTexture(&textures) {
     //cout << "pos: " << pos.x << ", " << pos.y << '\n';
     //cout << "spriteType: " << spriteType << '\n';
 
     // Ensure textures is not nullptr before accessing it
-    if (textures != nullptr && textures->count(spriteType)) {
+    if (myTexture != nullptr && myTexture->count(spriteType)) {
         // Create the sprite using the texture at spriteType
         setSprite(spriteType);
         setPosition(pos);
@@ -25,19 +24,19 @@ Cell::Cell(sf::Vector2f pos, int type, std::unordered_map<int, sf::Texture>* tex
 
 Cell::~Cell()
 {
-    delete sprite;
+    sprite.reset();
 }
 
 void Cell::setSprite(int type)
 {
     if(sprite == nullptr)
     {
-        sprite = new sf::Sprite((*myTexture)[type]);
+        sprite = std::make_unique<sf::Sprite>((*myTexture)[type]);
     }
     else
     {
-        delete sprite;
-        sprite = new sf::Sprite((*myTexture)[type]);
+        sprite.reset();
+        sprite = std::make_unique<sf::Sprite>((*myTexture)[type]);
     }
 }
 void Cell::setPosition(sf::Vector2f pos)
@@ -47,6 +46,5 @@ void Cell::setPosition(sf::Vector2f pos)
 
 void Cell::deleteCell() 
 {
-    delete sprite;
-    sprite = nullptr;
+    sprite.reset();
 }
