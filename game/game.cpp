@@ -48,7 +48,7 @@ void Game::initVariable()
     initializeGrid();
 
     //Initializes Ui and adds Ui observer to Subject
-    playerInput.inputReader.addObserver(&Ui.inputCatcher);
+    //playerInput.inputReader.addObserver(&Ui.inputCatcher);
 
     // Center the view **once** on the middle of the player
     viewDefault.setCenter(player.sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
@@ -62,7 +62,7 @@ void Game::initWindow()
     this->window->setView(viewDefault);
 
     //set ui ptr
-    Ui.SetWindow(window);
+    //Ui.SetWindow(window);
 }
 
 Game::~Game()
@@ -93,7 +93,7 @@ void Game::pollEvents()
 
     viewCoord = player.sprite.getPosition();
     light.drawSource(sf::Vector2f(static_cast<float>(player.getX() * gridSize), static_cast<float>(player.getY() * gridSize)), 200.f);
-    Ui.SetPosition(viewCoord);
+    //Ui.SetPosition(viewCoord);
 }
 
 //Update
@@ -106,32 +106,50 @@ void Game::render()
 {
     sf::Sprite lightSprite(light.texture.getTexture());
     this -> window -> clear(sf::Color::Blue);
-    backgroundLayer -> draw(*window); 
-    obstacleLayer -> draw(*window); 
+    drawMap();
     this -> window -> draw(player.sprite);
     this -> window -> draw(zombie.sprite);
     this -> window -> draw(lightSprite, sf::BlendMultiply);
-    this -> window -> draw(Ui.healthbar.sprite);
-    Ui.DrawInventory();
+    //this -> window -> draw(Ui.healthbar.sprite);
+    //Ui.DrawInventory();
     this -> window -> display();
     saveMap();
 }
+void Game::drawMap() {
+    for (const auto& layerPtr : layers) {
+        if (layerPtr) { // Ensure the pointer is valid
+            layerPtr->draw(*window);
+        }
+    }
+}
+
+void Game::drawEntities() {
+    //unfinished
+}
 
 void Game::initializeGrid() {
+    layerNames = {"background", "obstacles"};
     // Create the map layer
-    backgroundLayer = std::make_unique<Layer>("background.txt", gridSize);
-    obstacleLayer = std::make_unique<Layer>("obstacles.txt", gridSize);
+    for (const auto& name : layerNames) {
+        layers.push_back(std::make_unique<Layer>(name + ".txt", gridSize));
+    }
 }
 
 void Game::saveMap() {
-    backgroundLayer->saveLayer("BackgroundTest.txt");
-    obstacleLayer->saveLayer("ObstaclesTest.txt");
+    for (const auto& layerPtr : layers) {
+        if (layerPtr) {
+            layerPtr->saveLayer(layerPtr->getLayerName() + "Test.txt");
+        }
+    }
 }
 
 
 void Game::loadMap() {
-    backgroundLayer->loadFromFile("Background.txt");
-    obstacleLayer->loadFromFile("Obstacles.txt");
+    for (const auto& layerPtr : layers) {
+        if (layerPtr) {
+            layerPtr->loadFromFile(layerPtr->getLayerName() + ".txt");
+        }
+    }
 }
 
 // Start Menu

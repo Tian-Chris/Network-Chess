@@ -135,18 +135,18 @@ void Ui::onInput(const std::string& input)
 int Ui::checkValidMove(int y, int x)
 {
     // Check if the pointer is not null
-    if (game->obstacleLayer->getCellName(y, x) == "Error: Ptr is nullptr") {
+    if (game->layers[1]->getCellName(y, x) == "Error: Ptr is nullptr") {
         return 1;
     }
     else
     {
-        string spriteType = game->obstacleLayer->getCellName(y, x);
+        string spriteType = game->layers[1]->getCellName(y, x);
         
         // Check if the spriteType is not empty cell
-        if (spriteType != "Empty") {
-            return 0;  // invalid move (non-empty cell)
+        if (spriteType == "Empty") {
+            return 1;  // valid move (either empty cell or nullptr)
         }
     }
 
-    return 1;  // valid move (either empty cell or nullptr)
+    return 0;  // invalid move (non-empty cell)
 }

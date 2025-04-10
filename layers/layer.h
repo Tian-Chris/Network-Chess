@@ -30,20 +30,24 @@ public:
 
     /**
      * @brief Get the type of the cell at the specified coordinates
-     * @param x The x coordinate of the cell
-     * @param y The y coordinate of the cell
+     * @param y The x coordinate of the cell
+     * @param x The y coordinate of the cell
      * @return Returns -1 if nullptr or out of bounds
      */
     int getCellType(size_t x, size_t y);
 
     /**
      * @brief Get the name of the cell at the specified coordinates
-     * @param x The x coordinate of the cell
-     * @param y The y coordinate of the cell
+     * @param y The x coordinate of the cell
+     * @param x The y coordinate of the cell
      * @return Returns "Empty" if cell type == 0, returns an error message (Error: Ptr is nullptr) if nullptr or out of bounds
      */
     std::string getCellName(size_t x, size_t y);
 
+    std::string getLayerName() const { return name; }
+
+    void setLayerName(const std::string& newName) { name = newName; }
+    
     private:
     std::string name; //Layer name
     std::vector<std::vector<std::unique_ptr<Cell>>> grid; // Changed to unique_ptr

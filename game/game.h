@@ -75,6 +75,16 @@ public:
      * @brief Updates the entity state (unfinished).
      */
     void updateEntity(); //unfinishedd
+
+    /**
+     * @brief draws map
+     */
+    void drawMap();
+
+    /**
+     * @brief draws entities. Unfinished
+     */
+    void drawEntities(); //uninished
     
     //handlesinput
     /**
@@ -94,28 +104,7 @@ public:
     //UI
     Ui Ui;
 
-    //add server/client
-    //CustomServer myServer;
-
 protected:
-    //window
-    sf::RenderWindow* window;
-    sf::VideoMode videoMode;
-    float aspectRatio;
-
-    //windowvect
-    sf::Vector2f viewCoord;
-    
-    //grid
-    //float gridSize;
-    // std::vector<std::vector<Cell>> grid;
-    // std::vector<sf::Texture> textures;  // Store different textures here
-    // std::vector<sf::Sprite> sprites;
-    // void drawGrid(); 
-    std::unique_ptr<Layer> backgroundLayer;
-    std::unique_ptr<Layer> obstacleLayer;
-    LightMap light;
-
     //init
     /**
      * @brief Initializes game variables.
@@ -132,7 +121,21 @@ protected:
      */
     void initializeGrid();
 
+    //window
+    sf::RenderWindow* window;
+    sf::VideoMode videoMode;
+    float aspectRatio;
+
+    //windowvect
+    sf::Vector2f viewCoord;
+    
+    //layers
+    std::vector<std::unique_ptr<Layer>> layers;
+    std::vector<std::string> layerNames;
+    LightMap light;
+
     //objects
+    std::vector<std::unique_ptr<Entity>> entitiesList;
     Entity player;
     Entity zombie;
 

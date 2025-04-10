@@ -53,7 +53,7 @@ void Layer::loadFromFile(const std::string& fileName) {
         // Save the int-string pair in the textureFileNames map
         textureFileNames[textureID] = textureFileName;
     }
-    //cout << "loadFromFile middle \n";
+    cout << "loadFromFile middle \n";
     
     // Read the remaining lines for the grid
     while (std::getline(file, line)) {
@@ -61,11 +61,11 @@ void Layer::loadFromFile(const std::string& fileName) {
         std::istringstream stream(line);
         int type;
         float x = 0.0f;
-        //cout << "loadFromFile preloop \n";
+        cout << "loadFromFile preloop \n";
         while (stream >> type) {
-            //cout << "grid.size: " << grid.size() <<"\n";
-            //cout << "x " << x <<"\n";
-            //cout << "type: " << type <<"\n";
+            cout << "grid.size: " << grid.size() <<"\n";
+            cout << "x " << x <<"\n";
+            cout << "type: " << type <<"\n";
             // Only create a cell if the type is a valid texture ID
             if (textures.find(type) != textures.end()) {
                 // Dynamically allocate a Cell object
@@ -96,7 +96,7 @@ void Layer::draw(sf::RenderWindow& window) {
     for (size_t y = 0; y < grid.size(); ++y) {
         for (size_t x = 0; x < grid[y].size(); ++x) {
             // Only draw if the pointer is not null
-            if (grid[y][x]) {
+            if (grid[y][x] != nullptr ) {
                 window.draw(*grid[y][x]->sprite);
             }
         }
@@ -141,24 +141,24 @@ void Layer::saveLayer(const std::string& mystring)
     file.close();
 }
 
-int Layer::getCellType(size_t x, size_t y)
+int Layer::getCellType(size_t y, size_t x)
 {
-    if (x < grid.size() && y < grid[x].size() && grid[y][x] != nullptr) {
+    if (y < height && x < length && grid[y][x] != nullptr ) {
         return grid[y][x]->spriteType;
     }
     return -1;  // Return -1 if the cell is nullptr or out of bounds
 }
 
-string Layer::getCellName(size_t x, size_t y)
+string Layer::getCellName(size_t y, size_t x)
 {
-    int type = getCellType(x, y);
-        if(type == -1)
-        {
-            return "Error: Ptr is nullptr";
-        }
-        if(type == 0)
-        {
-            return "Empty";
-        }
+    int type = getCellType(y, x);
+    if(type == -1)
+    {
+        return "Error: Ptr is nullptr";
+    }
+    if(type == 0)
+    {
+        return "Empty";
+    }
     return textureFileNames[type];
 }
