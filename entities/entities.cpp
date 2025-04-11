@@ -1,5 +1,17 @@
 #include "entities.h"
 #include "../global/globals.h"
+
+Entity::Entity(const std::string& spriteFileName) : 
+    //not concatonated remember to add images/ elsewhere
+    spriteTexture(spriteFileName),
+    sprite(spriteTexture),
+    hp(-1)
+{
+    sprite.setPosition({0.f, 0.f});
+    x = 0;
+    y = 0;
+}
+
 Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos) : 
     //not concatonated remember to add images/ elsewhere
     spriteTexture(spriteFileName),

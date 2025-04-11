@@ -37,6 +37,16 @@ public:
     void render();
 
     /**
+     * @brief Loads the game map.
+     */
+    void loadMap();
+
+    /**
+     * @brief Saves the game map. 
+     */
+    void saveMap();
+
+    /**
      * @brief Adds an entity to the game (unfinished).
      */
     void addEntity(); //unfinished
@@ -45,21 +55,6 @@ public:
      * @brief Removes an entity from the game (unfinished).
      */
     void removeEntity(); //unfinished
-
-    /**
-     * @brief Loads the game map (unfinished).
-     */
-    void loadMap(); //unfinished
-
-    /**
-     * @brief Saves the game map (unfinished).
-     */
-    void saveMap();
-
-    /**
-     * @brief Loads the entity list (unfinished).
-     */
-    void loadEntityList(); //unfinished
 
     /**
      * @brief Loads a specific entity (unfinished).
@@ -119,7 +114,12 @@ protected:
     /**
      * @brief Initializes the game grid.
      */
-    void initializeGrid();
+    void initGrid();
+
+    /**
+     * @brief Initializes the entity list (unfinished).
+     */
+    void initEntities(const std::string& fileName); //unfinished
 
     //window
     sf::RenderWindow* window;
@@ -136,8 +136,11 @@ protected:
 
     //objects
     std::vector<std::unique_ptr<Entity>> entitiesList;
-    Entity player;
-    Entity zombie;
+
+    /**
+     * @brief Pointer to the selected player entity.
+     */
+    Entity* player;
 
     //views
     sf::View viewStart;

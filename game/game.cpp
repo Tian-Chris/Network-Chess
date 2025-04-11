@@ -21,8 +21,8 @@ Game::Game()
         light(1280, 800),
 
         //objects
-        player("images/player.png", 10, sf::Vector2f({gridSize, gridSize})),
-        zombie("images/enemy.png", 10, sf::Vector2f({128, 128})),
+        // player("images/player.png", 10, sf::Vector2f({gridSize, gridSize})),
+        // zombie("images/enemy.png", 10, sf::Vector2f({128, 128})),
 
         //initializes Ui
         Ui(this),
@@ -45,13 +45,15 @@ void Game::initVariable()
     // view
     zoom = 0;
     // grid 
-    initializeGrid();
+    initGrid();
+    initEntities("entities.txt");
 
+    player = entitiesList[0].get();
     //Initializes Ui and adds Ui observer to Subject
-    //playerInput.inputReader.addObserver(&Ui.inputCatcher);
+    playerInput.inputReader.addObserver(&Ui.inputCatcher);
 
     // Center the view **once** on the middle of the player
-    viewDefault.setCenter(player.sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
+    viewDefault.setCenter(player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
     viewZoom.setCenter(viewDefault.getCenter());
     viewCoord = {640.f, 400.f};
 }
@@ -62,12 +64,56 @@ void Game::initWindow()
     this->window->setView(viewDefault);
 
     //set ui ptr
-    //Ui.SetWindow(window);
+    Ui.SetWindow(window);
+}
+
+void Game::initGrid() {
+    layerNames = {"background", "obstacles"};
+    // Create the map layer
+    for (const auto& name : layerNames) {
+        layers.push_back(std::make_unique<Layer>(name + ".txt", gridSize));
+    }
+}
+
+void Game::initEntities(const std::string& fileName) {
+    std::string fullName = "text/" + fileName;
+    std::ifstream file(fullName);
+    if (!file.is_open()) {
+        std::cerr << "Error: Could not open file " << fileName << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream stream(line);
+        std::string entityName, imageName;
+        int x, y;
+
+        // Read the entity name, image file name, and coordinates
+        if (!(stream >> entityName >> imageName >> x >> y)) {
+            std::cerr << "Error: Malformed line in " << fileName << ": " << line << std::endl;
+            continue;
+        }
+
+        // Create a new Entity object
+        auto entityPtr = std::make_unique<Entity>("images/" + imageName, 10, sf::Vector2f(x * gridSize, y * gridSize));
+
+        // Set the entity's name
+        entityPtr->setName(entityName);
+
+        // Set the entity's grid coordinates
+        entityPtr->setPosition(x, y);
+
+        // Store the entity in the vector
+        entitiesList.push_back(std::move(entityPtr));
+    }
+
+    std::cout << "Entities loaded from " << fileName << ": " << entitiesList.size() << " entities." << std::endl;
 }
 
 Game::~Game()
 {
-    delete this -> window;
+    delete this->window;
 }
 
 //Accessors
@@ -78,11 +124,11 @@ const bool Game::getWindowIsOpen() const
 
 void Game::pollEvents()
 {
-    this -> window -> setKeyRepeatEnabled(false);
-    while (const std::optional event = this -> window -> pollEvent())
+    this->window->setKeyRepeatEnabled(false);
+    while (const std::optional<sf::Event> event = this->window->pollEvent())
     {
         if (event->is<sf::Event::Closed>())
-            this -> window -> close();
+            this->window->close();
 
         //keyboard inputs
         else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>())
@@ -91,28 +137,27 @@ void Game::pollEvents()
         }
     }
 
-    viewCoord = player.sprite.getPosition();
-    light.drawSource(sf::Vector2f(static_cast<float>(player.getX() * gridSize), static_cast<float>(player.getY() * gridSize)), 200.f);
-    //Ui.SetPosition(viewCoord);
+    viewCoord = player->sprite.getPosition();
+    light.drawSource(sf::Vector2f(static_cast<float>(player->getX() * gridSize), static_cast<float>(player->getY() * gridSize)), 200.f);
+    Ui.SetPosition(viewCoord);
 }
 
 //Update
 void Game::update()
 {
-    this -> pollEvents();
+    this->pollEvents();
 }
 
 void Game::render()
 {
     sf::Sprite lightSprite(light.texture.getTexture());
-    this -> window -> clear(sf::Color::Blue);
+    this->window->clear(sf::Color::Blue);
     drawMap();
-    this -> window -> draw(player.sprite);
-    this -> window -> draw(zombie.sprite);
-    this -> window -> draw(lightSprite, sf::BlendMultiply);
-    //this -> window -> draw(Ui.healthbar.sprite);
-    //Ui.DrawInventory();
-    this -> window -> display();
+    this->window->draw(player->sprite);
+    this->window->draw(lightSprite, sf::BlendMultiply);
+    this -> window -> draw(Ui.healthbar.sprite);
+    Ui.DrawInventory();
+    this->window->display();
     saveMap();
 }
 void Game::drawMap() {
@@ -125,14 +170,6 @@ void Game::drawMap() {
 
 void Game::drawEntities() {
     //unfinished
-}
-
-void Game::initializeGrid() {
-    layerNames = {"background", "obstacles"};
-    // Create the map layer
-    for (const auto& name : layerNames) {
-        layers.push_back(std::make_unique<Layer>(name + ".txt", gridSize));
-    }
 }
 
 void Game::saveMap() {
