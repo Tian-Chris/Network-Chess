@@ -24,6 +24,7 @@ class InputCatcher : public Observer {
 class Ui {
 public:
     Ui(Game* game);
+    
     void UpdateHealth();
     void SetPosition(sf::Vector2f input);
     void DrawInventory();

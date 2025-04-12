@@ -12,6 +12,7 @@ public:
     // Handles key press events
     void handleKeyPress(const sf::Event::KeyPressed& keyPressed);
     InputReader inputReader;
+    void handleMouseClick(const sf::Vector2i& mousePosition);
 };
 
 #endif // PLAYERINPUT_H

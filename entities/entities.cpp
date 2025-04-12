@@ -10,6 +10,7 @@ Entity::Entity(const std::string& spriteFileName) :
     sprite.setPosition({0.f, 0.f});
     x = 0;
     y = 0;
+    clicked = false;
 }
 
 Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos) : 
@@ -21,6 +22,7 @@ Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f po
     sprite.setPosition(pos);
     x = pos.x/gridSize;
     y = pos.y/gridSize;
+    clicked = false;
 }
 
 //empty
@@ -66,3 +68,14 @@ int Entity::getY()
     return y;
 }
 
+void Entity::checkClick(sf::Vector2i mousePos) {
+    if (mousePos.x > sprite.getPosition().x && mousePos.x < (sprite.getPosition().x + gridSize)) {
+        if (mousePos.y > sprite.getPosition().y && mousePos.y < (sprite.getPosition().y + gridSize)) {
+
+            setState();
+        }
+    }
+}
+void Entity::setState() {
+    clicked = !clicked;
+}

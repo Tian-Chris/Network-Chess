@@ -33,8 +33,8 @@ Game::Game()
 {   
     //std::cout << "Server started on port 12345" << std::endl;
     //myServer.Start();
-    this -> initVariable();
-    this -> initWindow();
+    //this -> initVariable();
+    //this -> initWindow();
 }
 
 void Game::initVariable() 
@@ -45,7 +45,8 @@ void Game::initVariable()
     // view
     zoom = 0;
     // grid 
-    initGrid();
+    std::vector<std::string> myVect = {"background", "obstacles"};
+    initGrid(myVect);
     initEntities("entities.txt");
 
     player = entitiesList[0].get();
@@ -67,8 +68,8 @@ void Game::initWindow()
     Ui.SetWindow(window);
 }
 
-void Game::initGrid() {
-    layerNames = {"background", "obstacles"};
+void Game::initGrid(std::vector<std::string> myVect) {
+    layerNames = myVect;
     // Create the map layer
     for (const auto& name : layerNames) {
         layers.push_back(std::make_unique<Layer>(name + ".txt", gridSize));
@@ -169,7 +170,11 @@ void Game::drawMap() {
 }
 
 void Game::drawEntities() {
-    //unfinished
+    for (const auto& entity : entitiesList) {
+        if (entity) { // Ensure the pointer is valid
+            this->window->draw(entity->sprite);
+        }
+    }
 }
 
 void Game::saveMap() {

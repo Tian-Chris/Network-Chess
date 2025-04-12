@@ -53,7 +53,7 @@ void Layer::loadFromFile(const std::string& fileName) {
         // Save the int-string pair in the textureFileNames map
         textureFileNames[textureID] = textureFileName;
     }
-    cout << "loadFromFile middle \n";
+    //cout << "loadFromFile middle \n";
     
     // Read the remaining lines for the grid
     while (std::getline(file, line)) {
@@ -61,11 +61,11 @@ void Layer::loadFromFile(const std::string& fileName) {
         std::istringstream stream(line);
         int type;
         float x = 0.0f;
-        cout << "loadFromFile preloop \n";
+        //cout << "loadFromFile preloop \n";
         while (stream >> type) {
-            cout << "grid.size: " << grid.size() <<"\n";
-            cout << "x " << x <<"\n";
-            cout << "type: " << type <<"\n";
+            // cout << "grid.size: " << grid.size() <<"\n";
+            // cout << "x " << x <<"\n";
+            // cout << "type: " << type <<"\n";
             // Only create a cell if the type is a valid texture ID
             if (textures.find(type) != textures.end()) {
                 // Dynamically allocate a Cell object

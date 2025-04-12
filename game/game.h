@@ -15,110 +15,30 @@ public:
     Game();
     virtual ~Game();
 
-    /**
-     * @brief Checks if the window is still open.
-     * @return True if the window is open, false otherwise.
-     */
     const bool getWindowIsOpen() const;
-
-    /**
-     * @brief Polls for input events (keyboard, mouse, etc.).
-     */
     void pollEvents();
-
-    /**
-     * @brief Updates the game state.
-     */
     void update();
-
-    /**
-     * @brief Renders the game objects to the window.
-     */
-    void render();
-
-    /**
-     * @brief Loads the game map.
-     */
+    virtual void render();
     void loadMap();
-
-    /**
-     * @brief Saves the game map. 
-     */
     void saveMap();
-
-    /**
-     * @brief Adds an entity to the game (unfinished).
-     */
     void addEntity(); //unfinished
-
-    /**
-     * @brief Removes an entity from the game (unfinished).
-     */
     void removeEntity(); //unfinished
-
-    /**
-     * @brief Loads a specific entity (unfinished).
-     */
     void loadEntity(); //unfinished
-
-    /**
-     * @brief Sends the entity list (unfinished).
-     */
     void sendEntityList(); //unfinished
-
-    /**
-     * @brief Updates the entity state (unfinished).
-     */
     void updateEntity(); //unfinishedd
-
-    /**
-     * @brief draws map
-     */
     void drawMap();
-
-    /**
-     * @brief draws entities. Unfinished
-     */
     void drawEntities(); //uninished
     
-    //handlesinput
-    /**
-     * @brief Handles player input.
-     */
     friend class PlayerInput;
-
-    /**
-     * @brief Handles UI interactions.
-     */
     friend class Ui;
-
-    /**
-     * @brief Handles player input.
-     */
     PlayerInput playerInput;
-    //UI
     Ui Ui;
 
 protected:
     //init
-    /**
-     * @brief Initializes game variables.
-     */
-    void initVariable();
-
-    /**
-     * @brief Initializes the game window.
-     */
+    virtual void initVariable();
     void initWindow();
-
-    /**
-     * @brief Initializes the game grid.
-     */
-    void initGrid();
-
-    /**
-     * @brief Initializes the entity list (unfinished).
-     */
+    void initGrid(std::vector<std::string> myVect);
     void initEntities(const std::string& fileName); //unfinished
 
     //window
@@ -136,10 +56,6 @@ protected:
 
     //objects
     std::vector<std::unique_ptr<Entity>> entitiesList;
-
-    /**
-     * @brief Pointer to the selected player entity.
-     */
     Entity* player;
 
     //views

@@ -21,11 +21,14 @@ public:
     void draw();
     void move(char input);
     void reset(const std::string& filename);
+    void checkClick(sf::Vector2i);
+    void setState();
 
 private:
     int hp;
     int x;
     int y;
+    bool clicked;
     std::string name;
 };
 

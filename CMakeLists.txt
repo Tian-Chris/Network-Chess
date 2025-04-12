@@ -23,6 +23,7 @@ add_executable(cttss
     main.cpp
     game/game.cpp
     game/network.cpp
+    game/chessGame.cpp
     layers/cell.cpp
     layers/layer.cpp
     input/playerInput.cpp
