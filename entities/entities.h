@@ -21,7 +21,8 @@ public:
     void draw();
     void move(char input);
     void reset(const std::string& filename);
-    void checkClick(sf::Vector2i);
+    void checkClick(sf::Vector2f);
+    bool getState() const { return clicked; }
     void setState();
 
 private:

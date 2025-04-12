@@ -1,71 +1,39 @@
-#include "../global/pch.h"
 #include "game.h"
+#include "../global/pch.h"
 #include "../layers/cell.h"
 #include "../global/globals.h"
 
+// Constructor
+Game::Game()        : 
+    //videoMode and aspectRatio
+    videoMode({1280, 800}),
+    aspectRatio(static_cast<float>(videoMode.size.x) / videoMode.size.y),
+    viewChess(sf::FloatRect({0.f, 0.f}, {256.f * aspectRatio, 256.f})),
+    playerInput()
 
-//Constructor / Destructors
-Game::Game() 
-        : 
-        //videoMode and aspectRatio
-        videoMode({1280, 800}),
-        aspectRatio(static_cast<float>(videoMode.size.x) / videoMode.size.y),
-
-        //views
-        viewStart(sf::FloatRect({0.f, 0.f},{1280.f, 800.f})),
-        viewZoom(sf::FloatRect({0.f, 0.f}, {800.f * aspectRatio, 800.f})),
-        viewDefault(sf::FloatRect({0.f, 0.f}, {400.f * aspectRatio, 400.f})),
-
-        //gridSize
-        //gridSize(50.f),
-        light(1280, 800),
-
-        //objects
-        // player("images/player.png", 10, sf::Vector2f({gridSize, gridSize})),
-        // zombie("images/enemy.png", 10, sf::Vector2f({128, 128})),
-
-        //initializes Ui
-        Ui(this),
-        //object that handles input
-        playerInput()
-        //myServer(12345)
-
-{   
-    //std::cout << "Server started on port 12345" << std::endl;
-    //myServer.Start();
-    //this -> initVariable();
-    //this -> initWindow();
+{
+    this -> initVariable();
+    this -> initWindow();
 }
 
-void Game::initVariable() 
+Game::~Game()
 {
-    // window pointer
+    delete this->window;
+}
+
+void Game::initVariable() {
     this->window = nullptr;
 
-    // view
-    zoom = 0;
-    // grid 
-    std::vector<std::string> myVect = {"background", "obstacles"};
+    std::vector<std::string> myVect = {"chessBoard"};
     initGrid(myVect);
-    initEntities("entities.txt");
-
-    player = entitiesList[0].get();
-    //Initializes Ui and adds Ui observer to Subject
-    playerInput.inputReader.addObserver(&Ui.inputCatcher);
-
-    // Center the view **once** on the middle of the player
-    viewDefault.setCenter(player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));
-    viewZoom.setCenter(viewDefault.getCenter());
-    viewCoord = {640.f, 400.f};
+    initEntities("chessEntities.txt");
 }
 
 void Game::initWindow()
 {
     this->window = new sf::RenderWindow(videoMode, "CTTSS");
-    this->window->setView(viewDefault);
+    this->window->setView(viewChess);
 
-    //set ui ptr
-    Ui.SetWindow(window);
 }
 
 void Game::initGrid(std::vector<std::string> myVect) {
@@ -112,11 +80,6 @@ void Game::initEntities(const std::string& fileName) {
     std::cout << "Entities loaded from " << fileName << ": " << entitiesList.size() << " entities." << std::endl;
 }
 
-Game::~Game()
-{
-    delete this->window;
-}
-
 //Accessors
 const bool Game::getWindowIsOpen() const
 {
@@ -136,11 +99,25 @@ void Game::pollEvents()
         {
             playerInput.handleKeyPress(*keyPressed); // Call the input class which handles all button presses from now on
         }
+        else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && mousePressed == false)
+        {
+            mousePressed = true;
+            checkClick();
+        }
+        else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false)
+        {
+            mousePressed = false;
+        }
     }
+}
 
-    viewCoord = player->sprite.getPosition();
-    light.drawSource(sf::Vector2f(static_cast<float>(player->getX() * gridSize), static_cast<float>(player->getY() * gridSize)), 200.f);
-    Ui.SetPosition(viewCoord);
+void Game::checkClick()
+{
+    for (const auto& entity : entitiesList) {
+        if (entity) { // Ensure the pointer is valid
+            entity->checkClick(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window), viewChess));
+        }
+    }
 }
 
 //Update
@@ -149,18 +126,13 @@ void Game::update()
     this->pollEvents();
 }
 
-void Game::render()
-{
-    sf::Sprite lightSprite(light.texture.getTexture());
-    this->window->clear(sf::Color::Blue);
+void Game::render() {
+    this->window->clear(sf::Color::White);
     drawMap();
-    this->window->draw(player->sprite);
-    this->window->draw(lightSprite, sf::BlendMultiply);
-    this -> window -> draw(Ui.healthbar.sprite);
-    Ui.DrawInventory();
+    drawEntities();
     this->window->display();
-    saveMap();
 }
+
 void Game::drawMap() {
     for (const auto& layerPtr : layers) {
         if (layerPtr) { // Ensure the pointer is valid
@@ -171,7 +143,7 @@ void Game::drawMap() {
 
 void Game::drawEntities() {
     for (const auto& entity : entitiesList) {
-        if (entity) { // Ensure the pointer is valid
+        if (entity->getState() == false) { // Ensure the pointer is valid
             this->window->draw(entity->sprite);
         }
     }
@@ -194,6 +166,7 @@ void Game::loadMap() {
     }
 }
 
+
 // Start Menu
 StartMenu::StartMenu(): videoMode({1280, 800}),
                         font("text/Arial.ttf"),
@@ -210,5 +183,3 @@ StartMenu::~StartMenu()
 {
     delete window;
 }
-
-

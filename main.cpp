@@ -2,8 +2,7 @@
 #include "global/button.h"
 #include "global/pch.h"
 #include "game/network.h"
-#include "game/chessGame.h"
-
+ 
 using namespace std;
 
 enum class state {
@@ -80,7 +79,7 @@ int main()
 
         if(myState == state::GameServer)
         {
-            Chess game;
+            Game game;
             while (game.getWindowIsOpen())
             {
                 game.update();

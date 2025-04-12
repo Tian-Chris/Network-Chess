@@ -76,9 +76,9 @@ void Ui::onInput(const std::string& input)
             if(checkValidMove(game->player->getY() - 1, game->player->getX()))
             {
                 game->player->move('w');
-                game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                game->window->setView(game->viewDefault);    
+                // game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                // game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
+                // game->window->setView(game->viewDefault);    
             }
         }
         if(input == "a")
@@ -86,9 +86,9 @@ void Ui::onInput(const std::string& input)
             if(checkValidMove(game->player->getY(), game->player->getX() - 1))
             {
                 game->player->move('a');
-                game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                game->window->setView(game->viewDefault);  
+                // game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                // game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
+                // game->window->setView(game->viewDefault);  
             }
         }
         if(input == "d")
@@ -96,9 +96,9 @@ void Ui::onInput(const std::string& input)
             if(checkValidMove(game->player->getY(), game->player->getX() + 1))
             {
                 game->player->move('d');
-                game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                game->window->setView(game->viewDefault); 
+                // game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                // game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
+                // game->window->setView(game->viewDefault); 
             }
         }
         if(input == "s")
@@ -106,9 +106,9 @@ void Ui::onInput(const std::string& input)
             if(checkValidMove(game->player->getY() + 1, game->player->getX()))
             {
                 game->player->move('s');
-                game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
-                game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
-                game->window->setView(game->viewDefault);     
+                // game->viewDefault.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f)); 
+                // game->viewZoom.setCenter(game->player->sprite.getPosition() + sf::Vector2f(gridSize / 2.f, gridSize / 2.f));  
+                // game->window->setView(game->viewDefault);     
             }
         }
         //change mode

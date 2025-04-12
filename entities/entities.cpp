@@ -68,14 +68,17 @@ int Entity::getY()
     return y;
 }
 
-void Entity::checkClick(sf::Vector2i mousePos) {
+void Entity::checkClick(sf::Vector2f mousePos) {
     if (mousePos.x > sprite.getPosition().x && mousePos.x < (sprite.getPosition().x + gridSize)) {
         if (mousePos.y > sprite.getPosition().y && mousePos.y < (sprite.getPosition().y + gridSize)) {
-
+            std::cout << "Entity clicked: " << getName() << std::endl;
+            std::cout << "mousepos:" << mousePos.x << " " << mousePos.y << std::endl;
+            std::cout << "sprite:" << sprite.getPosition().x << " " << sprite.getPosition().y << std::endl;
             setState();
         }
     }
 }
 void Entity::setState() {
+    std::cout << "Entity state changed: " << clicked << std::endl;
     clicked = !clicked;
 }

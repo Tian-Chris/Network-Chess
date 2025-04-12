@@ -39,6 +39,6 @@ void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
 }
 
 void PlayerInput::handleMouseClick(const sf::Vector2i& mousePosition) {
-    inputReader.notifyObservers("mouseClick");
+    
 }
 

@@ -18,7 +18,7 @@ public:
     const bool getWindowIsOpen() const;
     void pollEvents();
     void update();
-    virtual void render();
+    void render();
     void loadMap();
     void saveMap();
     void addEntity(); //unfinished
@@ -27,16 +27,17 @@ public:
     void sendEntityList(); //unfinished
     void updateEntity(); //unfinishedd
     void drawMap();
+    void checkClick();
     void drawEntities(); //uninished
     
     friend class PlayerInput;
     friend class Ui;
     PlayerInput playerInput;
-    Ui Ui;
+    bool mousePressed = false;
+    bool color = false; //false = black true = white
 
 protected:
-    //init
-    virtual void initVariable();
+    void initVariable();
     void initWindow();
     void initGrid(std::vector<std::string> myVect);
     void initEntities(const std::string& fileName); //unfinished
@@ -52,35 +53,24 @@ protected:
     //layers
     std::vector<std::unique_ptr<Layer>> layers;
     std::vector<std::string> layerNames;
-    LightMap light;
 
     //objects
-    std::vector<std::unique_ptr<Entity>> entitiesList;
     Entity* player;
+    std::vector<std::unique_ptr<Entity>> entitiesList;
 
     //views
-    sf::View viewStart;
-    sf::View viewDefault;
-    sf::View viewZoom;
-    int currentView;
-    int zoom;
-};
-
-enum ViewMode {
-    Default = 0,   // Default view
-    Zoom = 1,  // Zoomed-out view
-    Full = 2, //entire map
+    sf::View viewChess;
 };
 
 class StartMenu {
-public:
-    StartMenu();
-    ~StartMenu();
-    sf::VideoMode videoMode;
-    sf::RenderWindow* window;
-    sf::Font font;
-    sf::Text text;
-
-};
+    public:
+        StartMenu();
+        ~StartMenu();
+        sf::VideoMode videoMode;
+        sf::RenderWindow* window;
+        sf::Font font;
+        sf::Text text;
+    
+    };
 
 #endif

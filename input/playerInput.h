@@ -10,9 +10,12 @@ class Game;
 class PlayerInput {
 public:
     // Handles key press events
-    void handleKeyPress(const sf::Event::KeyPressed& keyPressed);
     InputReader inputReader;
+    void handleKeyPress(const sf::Event::KeyPressed& keyPressed);
     void handleMouseClick(const sf::Vector2i& mousePosition);
+    bool mousePressed = false;
+    Entity* player;
+    
 };
 
 #endif // PLAYERINPUT_H
