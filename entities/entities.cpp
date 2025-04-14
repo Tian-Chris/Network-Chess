@@ -10,7 +10,6 @@ Entity::Entity(const std::string& spriteFileName) :
     sprite.setPosition({0.f, 0.f});
     x = 0;
     y = 0;
-    clicked = false;
 }
 
 Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos) : 
@@ -22,7 +21,19 @@ Entity::Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f po
     sprite.setPosition(pos);
     x = pos.x/gridSize;
     y = pos.y/gridSize;
-    clicked = false;
+}
+
+Entity::Entity(const std::string& spriteFileName, sf::Vector2f pos, int x, int y, const std::string& name) : 
+    //not concatonated remember to add images/ elsewhere
+    spriteTexture(spriteFileName),
+    sprite(spriteTexture),
+    hp(-1),
+    x(x),
+    y(y),
+    name(name)
+{
+    setColor();
+    sprite.setPosition(pos);
 }
 
 //empty
@@ -68,17 +79,65 @@ int Entity::getY()
     return y;
 }
 
-void Entity::checkClick(sf::Vector2f mousePos) {
+bool Entity::checkClick(sf::Vector2f mousePos) {
     if (mousePos.x > sprite.getPosition().x && mousePos.x < (sprite.getPosition().x + gridSize)) {
         if (mousePos.y > sprite.getPosition().y && mousePos.y < (sprite.getPosition().y + gridSize)) {
             std::cout << "Entity clicked: " << getName() << std::endl;
             std::cout << "mousepos:" << mousePos.x << " " << mousePos.y << std::endl;
             std::cout << "sprite:" << sprite.getPosition().x << " " << sprite.getPosition().y << std::endl;
-            setState();
+            return true;
         }
     }
+    else {
+        return false;
+    }   
 }
-void Entity::setState() {
-    std::cout << "Entity state changed: " << clicked << std::endl;
-    clicked = !clicked;
+
+void Entity::setColor() {
+    if (name == "WP") {
+        color = true;
+    } else if (name == "WN") {
+        color = true;
+    } else if (name == "WB") {
+        color = true;
+    } else if (name == "WR") {
+        color = true;
+    } else if (name == "WQ") {
+        color = true;
+    } else if (name == "WK") {
+        color = true;
+    } else if (name == "BP") {
+        color = false;
+    } else if (name == "BN") {
+        color = false;
+    } else if (name == "BB") {
+        color = false;
+    } else if (name == "BR") {
+        color = false;
+    } else if (name == "BQ") {
+        color = false;
+    } else if (name == "BK") {
+        color = false;
+    }
+}
+
+void Entity::setX(int newX) { 
+    x = newX; 
+    setSpritePosition();
+}
+void Entity::setY(int newY) { 
+    y = newY; 
+    setSpritePosition();
+}
+void Entity::setPosition(int newX, int newY) { 
+    x = newX; 
+    y = newY; 
+    setSpritePosition();
+}
+void Entity::setSpritePosition() { 
+    sprite.setPosition({x * 32.f, y * 32.f}); 
+}
+
+bool Entity::canMove(int x, int y) {
+    return true;
 }

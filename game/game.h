@@ -27,8 +27,9 @@ public:
     void sendEntityList(); //unfinished
     void updateEntity(); //unfinishedd
     void drawMap();
-    void checkClick();
-    void drawEntities(); //uninished
+    void drawSelected();
+    void drawEntities(); 
+    bool getColor() const { return color; }
     
     friend class PlayerInput;
     friend class Ui;
@@ -56,7 +57,13 @@ protected:
 
     //objects
     Entity* player;
-    std::vector<std::unique_ptr<Entity>> entitiesList;
+    void setPlayer(Entity* newPlayer) {
+        player = newPlayer;
+    }
+    Entity* getPlayer() {
+        return player;
+    }
+    std::vector<std::vector<std::unique_ptr<Entity>>> entitiesList;
 
     //views
     sf::View viewChess;

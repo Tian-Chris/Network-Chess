@@ -6,6 +6,7 @@ class Entity {
 public:
     Entity(const std::string& spriteFileName);
     Entity(const std::string& spriteFileName, int hitPoints, sf::Vector2f pos);
+    Entity(const std::string& spriteFileName, sf::Vector2f pos, int x, int y, const std::string& name);
     sf::Texture spriteTexture;
     sf::Sprite sprite;
 
@@ -13,23 +14,26 @@ public:
     int getY();
     void setName(const std::string& newName) { name = newName; };
     std::string getName() const { return name; }
-    void setPosition(int newX, int newY) { x = newX; y = newY; }
-    void setX(int newX) { x = newX; }
-    void setY(int newY) { y = newY; }
+    void setPosition(int newX, int newY);
+    void setSpritePosition();
+    void setX(int newX);
+    void setY(int newY);
 
     //empty
     void draw();
     void move(char input);
     void reset(const std::string& filename);
-    void checkClick(sf::Vector2f);
-    bool getState() const { return clicked; }
-    void setState();
+    bool checkClick(sf::Vector2f);
+    bool getColor() const { return color; }
+    void setColor();
+
+    bool canMove(int x, int y);
 
 private:
     int hp;
     int x;
     int y;
-    bool clicked;
+    bool color;
     std::string name;
 };
 

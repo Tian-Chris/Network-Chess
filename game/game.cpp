@@ -9,7 +9,8 @@ Game::Game()        :
     videoMode({1280, 800}),
     aspectRatio(static_cast<float>(videoMode.size.x) / videoMode.size.y),
     viewChess(sf::FloatRect({0.f, 0.f}, {256.f * aspectRatio, 256.f})),
-    playerInput()
+    playerInput(this),
+    player(nullptr)
 
 {
     this -> initVariable();
@@ -45,6 +46,13 @@ void Game::initGrid(std::vector<std::string> myVect) {
 }
 
 void Game::initEntities(const std::string& fileName) {
+    entitiesList.resize(8);
+
+    // Resize each row to hold 8 columns
+    for (auto& row : entitiesList) {
+        row.resize(8); // No need to pass nullptr; default initialization works
+    }
+    
     std::string fullName = "text/" + fileName;
     std::ifstream file(fullName);
     if (!file.is_open()) {
@@ -65,16 +73,10 @@ void Game::initEntities(const std::string& fileName) {
         }
 
         // Create a new Entity object
-        auto entityPtr = std::make_unique<Entity>("images/" + imageName, 10, sf::Vector2f(x * gridSize, y * gridSize));
-
-        // Set the entity's name
-        entityPtr->setName(entityName);
-
-        // Set the entity's grid coordinates
-        entityPtr->setPosition(x, y);
+        auto entityPtr = std::make_unique<Entity>("images/" + imageName, sf::Vector2f(x * gridSize, y * gridSize), x, y, entityName);
 
         // Store the entity in the vector
-        entitiesList.push_back(std::move(entityPtr));
+        entitiesList[x][y] = std::move(entityPtr);
     }
 
     std::cout << "Entities loaded from " << fileName << ": " << entitiesList.size() << " entities." << std::endl;
@@ -102,20 +104,11 @@ void Game::pollEvents()
         else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && mousePressed == false)
         {
             mousePressed = true;
-            checkClick();
+            playerInput.handleMouseClick(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window), viewChess));
         }
         else if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == false)
         {
             mousePressed = false;
-        }
-    }
-}
-
-void Game::checkClick()
-{
-    for (const auto& entity : entitiesList) {
-        if (entity) { // Ensure the pointer is valid
-            entity->checkClick(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window), viewChess));
         }
     }
 }
@@ -129,6 +122,7 @@ void Game::update()
 void Game::render() {
     this->window->clear(sf::Color::White);
     drawMap();
+    drawSelected();
     drawEntities();
     this->window->display();
 }
@@ -141,10 +135,26 @@ void Game::drawMap() {
     }
 }
 
+void Game::drawSelected() {
+    sf::Texture texture;
+    if (!texture.loadFromFile("images/selected.png")) {
+        throw std::runtime_error("Failed to load texture: images/selected.png");
+    }
+    sf::Sprite sprite(texture);
+    if (player != nullptr) {
+        sprite.setPosition({player->getX() * 32.f, player->getY() * 32.f});
+        this->window->draw(sprite);
+        cout << "drawSelected: x:" << player->getX() << endl;
+        cout << "drawSelected: y: " << player->getY() << endl; 
+    }
+}
+
 void Game::drawEntities() {
-    for (const auto& entity : entitiesList) {
-        if (entity->getState() == false) { // Ensure the pointer is valid
-            this->window->draw(entity->sprite);
+    for (int y = 0; y < entitiesList.size(); ++y) {
+        for(int x = 0; x < entitiesList[y].size(); ++x) {
+            if (entitiesList[x][y] != nullptr) {
+                this->window->draw(entitiesList[x][y]->sprite);
+            }
         }
     }
 }
