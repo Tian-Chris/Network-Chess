@@ -1,6 +1,8 @@
 #ifndef ENTITIES_H
 #define ENTITIES_H
 #include "../global/pch.h"
+#include "../game/chessLogic.h"
+
 
 class Entity {
 public:
@@ -10,10 +12,12 @@ public:
     sf::Texture spriteTexture;
     sf::Sprite sprite;
 
-    int getX();
-    int getY();
+    int getX() const;
+    int getY() const;
     void setName(const std::string& newName) { name = newName; };
     std::string getName() const { return name; }
+    void setType();
+    int getType() const { return type; }
     void setPosition(int newX, int newY);
     void setSpritePosition();
     void setX(int newX);
@@ -35,6 +39,7 @@ private:
     int y;
     bool color;
     std::string name;
+    int type;
 };
 
 #endif

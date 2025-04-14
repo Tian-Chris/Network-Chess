@@ -33,6 +33,7 @@ Entity::Entity(const std::string& spriteFileName, sf::Vector2f pos, int x, int y
     name(name)
 {
     setColor();
+    setType();
     sprite.setPosition(pos);
 }
 
@@ -69,12 +70,12 @@ void Entity::move(char input)
     }
 }
 
-int Entity::getX()
+int Entity::getX() const
 {
     return x;
 }
 
-int Entity::getY()
+int Entity::getY() const
 {
     return y;
 }
@@ -118,6 +119,22 @@ void Entity::setColor() {
         color = false;
     } else if (name == "BK") {
         color = false;
+    }
+}
+
+void Entity::setType() {
+    if (name == "WP" || name == "BP") {
+        type = PAWN;
+    } else if (name == "WN" || name == "BN") {
+        type = KNIGHT;
+    } else if (name == "WB" || name == "BB") {
+        type = BISHOP;
+    } else if (name == "WR" || name == "BR") {
+        type = ROOK;
+    } else if (name == "WQ" || name == "BQ") {
+        type = QUEEN;
+    } else if (name == "WK" || name == "BK") {
+        type = KING;
     }
 }
 

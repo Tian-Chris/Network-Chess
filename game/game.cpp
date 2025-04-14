@@ -76,7 +76,7 @@ void Game::initEntities(const std::string& fileName) {
         auto entityPtr = std::make_unique<Entity>("images/" + imageName, sf::Vector2f(x * gridSize, y * gridSize), x, y, entityName);
 
         // Store the entity in the vector
-        entitiesList[x][y] = std::move(entityPtr);
+        entitiesList[y][x] = std::move(entityPtr);
     }
 
     std::cout << "Entities loaded from " << fileName << ": " << entitiesList.size() << " entities." << std::endl;
@@ -144,8 +144,6 @@ void Game::drawSelected() {
     if (player != nullptr) {
         sprite.setPosition({player->getX() * 32.f, player->getY() * 32.f});
         this->window->draw(sprite);
-        cout << "drawSelected: x:" << player->getX() << endl;
-        cout << "drawSelected: y: " << player->getY() << endl; 
     }
 }
 
