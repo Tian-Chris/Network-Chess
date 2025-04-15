@@ -34,7 +34,12 @@ bool isPathClear(std::vector<std::vector<std::unique_ptr<Entity>>>& board, int f
     int c = fromCol + dCol;
 
     while (r != toRow || c != toCol) {
-        if (board[r][c] != nullptr) return false;
+        if (board[r][c] != nullptr) 
+        {
+            std::cout << board[r][c]->getName() << std::endl;
+            std::cout << "Path is blocked at (" << r << ", " << c << ")" << std::endl;
+            return false;
+        }
         r += dRow;
         c += dCol;
     }
@@ -77,7 +82,7 @@ bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move 
         }
         case BISHOP: {
             if (abs(move.toCol - move.fromCol) == abs(move.toRow - move.fromRow)) {
-                if (isPathClear(board, move.fromCol, move.fromRow, move.toCol, move.toRow)) {
+                if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
                     return true;
                 }
             }
@@ -85,12 +90,12 @@ bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move 
         }
         case ROOK: {
             if (move.fromRow == move.toRow) {
-                if (isPathClear(board, move.fromCol, move.fromRow, move.toCol, move.toRow)) {
+                if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
                     return true;
                 }
             }
             if (move.fromCol == move.toCol) {
-                if (isPathClear(board, move.fromCol, move.fromRow, move.toCol, move.toRow)) {
+                if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
                     return true;
                 }
             }
@@ -98,16 +103,16 @@ bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move 
         }
         case QUEEN: {
             if (abs(move.toCol - move.fromCol) == abs(move.toRow - move.fromRow)) {
-                if (isPathClear(board, move.fromCol, move.fromRow, move.toCol, move.toRow)) {
-                    return true;
-                }
-            }
-            if (move.fromRow == move.toRow) {
                 if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
                     return true;
                 }
             }
-            if (move.fromCol == move.toCol) {
+            else if (move.fromRow == move.toRow) {
+                if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
+                    return true;
+                }
+            }
+            else if (move.fromCol == move.toCol) {
                 if (isPathClear(board, move.fromRow, move.fromCol, move.toRow, move.toCol)) {
                     return true;
                 }
