@@ -30,12 +30,13 @@ public:
     void drawSelected();
     void drawEntities(); 
     bool getColor() const { return color; }
+    bool setColor() {color = !(color);}
     
     friend class PlayerInput;
     friend class Ui;
     PlayerInput playerInput;
     bool mousePressed = false;
-    bool color = false; //false = black true = white
+    bool color = true; //false = black true = white
 
 protected:
     void initVariable();

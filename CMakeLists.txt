@@ -22,7 +22,8 @@ FetchContent_MakeAvailable(SFML)
 add_executable(cttss
     main.cpp
     game/game.cpp
-    game/network.cpp
+    network/network.cpp
+    network/move.cpp
     game/chessLogic.cpp
     layers/cell.cpp
     layers/layer.cpp

@@ -1,7 +1,7 @@
 #include "game/game.h"
 #include "global/button.h"
 #include "global/pch.h"
-#include "game/network.h"
+#include "network/network.h"
  
 using namespace std;
 

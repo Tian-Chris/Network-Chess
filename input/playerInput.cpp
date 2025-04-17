@@ -44,12 +44,23 @@ void PlayerInput::handleMouseClick(sf::Vector2f mousePosition) {
 player = game->getPlayer();
 int x = static_cast<int>(mousePosition.x) / 32;
 int y = static_cast<int>(mousePosition.y) / 32;
+if(isKingInCheckmate(game->entitiesList, true))
+{
+    std::cout << "Checkmate: Black won";
+    return;
+}
+if(isKingInCheckmate(game->entitiesList, false))
+{
+    std::cout << "Checkmate: white won";
+    return;
+}
+
 
 if(player == nullptr)
 {
     if(game->entitiesList[y][x] == nullptr || game->entitiesList[y][x]->getColor() != game->getColor())
     {
-        std::cout << "Invalid selection" << std::endl;
+        //std::cout << "Invalid selection" << std::endl;
         game->setPlayer(nullptr);
         return;
     }
@@ -65,25 +76,26 @@ else
     if(game->entitiesList[y][x] == nullptr || game->entitiesList[y][x]->getColor() != player->getColor())
     {
         Move move = {player->getY(), player->getX(), y, x};
-        std::cout << "Attempting move from: " << move.fromRow << " " << move.fromCol << " to: " << move.toRow << " " << move.toCol << std::endl;
-        std::cout << "Player color: " << player->getColor() << std::endl;
+        // std::cout << "Attempting move from: " << move.fromRow << " " << move.fromCol << " to: " << move.toRow << " " << move.toCol << std::endl;
+        //std::cout << "Player color: " << player->getColor() << std::endl;
 
         if(game->entitiesList[player->getY()][player->getX()] == nullptr)
         {
-            std::cout << "Invalid move at player.cpp" << std::endl;
+            //std::cout << "Invalid move at player.cpp" << std::endl;
             game->setPlayer(nullptr);
             return;
         }
 
-        if(checkMove(game->entitiesList, move, player->getColor()))
+        if(checkMove(game->entitiesList, move, player->getColor(), true))
         {
             //deselects player
             game->setPlayer(nullptr);
+            game->setColor();
             return;
         }
         else
         {
-            std::cout << "Invalid move" << std::endl;
+            //std::cout << "Invalid move" << std::endl;
             
             game->setPlayer(nullptr);
             return;
