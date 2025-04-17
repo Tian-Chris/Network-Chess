@@ -4,18 +4,10 @@
 #include <vector>
 #include <memory>
 #include <cmath>
-
+#include "../network/move.h"
 class Entity;
+class Move;
 
-// Struct representing a chess move
-struct Move {
-    int fromRow;
-    int fromCol;
-    int toRow;
-    int toCol;
-};
-
-// Enum representing chess piece types
 enum Type {
     PAWN,
     KNIGHT,
@@ -25,10 +17,9 @@ enum Type {
     KING
 };
 
-// Function declarations
-bool checkMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool color, bool performMove);
+bool checkMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool performMove);
 bool isPathClear(std::vector<std::vector<std::unique_ptr<Entity>>>& board, int fromRow, int fromCol, int toRow, int toCol);
-bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool myColor);
+bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move);
 bool isKingInCheck(std::vector<std::vector<std::unique_ptr<Entity>>>& board, bool kingColor);
 bool isKingInCheckmate(std::vector<std::vector<std::unique_ptr<Entity>>>& board, bool kingColor);
-#endif // CHESS_LOGIC_H
+#endif 

@@ -5,8 +5,8 @@
 #include <thread>
 #include <deque>
 #include "message.h"
-#include "connection.h"  // Assuming connection class is declared in connection.h
-#include "tsqueue.h"     // Assuming tsqueue is declared in tsqueue.h
+#include "connection.h"  
+#include "tsqueue.h"  
 
 using asio::ip::tcp;
 

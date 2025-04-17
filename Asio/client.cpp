@@ -3,7 +3,6 @@
 #include <fstream>
 
 Client::Client() {
-    // Constructor (empty here but could initialize members if needed)
 }
 
 Client::~Client() {

@@ -11,6 +11,19 @@
 
 class tsqueue {
 public:
+    tsqueue(const tsqueue&) = delete;
+
+    tsqueue();
+    ~tsqueue();
+    Message& front();
+    Message& back();
+
+    //does not return front element
+    void pop_front();
+    void push_back(const Message& item);
+    void clear();
+    bool empty();
+
     // Mutex to protect access to the queue
     std::mutex myMutex;
 
@@ -22,33 +35,7 @@ public:
 
     // Mutex for the blocking condition variable
     std::mutex muxBlocking;
-
-    // Deleted copy constructor
-    tsqueue(const tsqueue&) = delete;
-
-    // Default constructor
-    tsqueue();
-
-    // Destructor
-    ~tsqueue();
-
-    // Access front element
-    Message& front();
-
-    // Access back element
-    Message& back();
-
-    // Pop the front element
-    void pop_front();
-
-    // Push back an element
-    void push_back(const Message& item);
-
-    // Clear the queue
-    void clear();
-
-    // Check if the queue is empty
-    bool empty();
+    
 };
 
 #endif // TSQ_H

@@ -5,6 +5,7 @@
 #include "../input/playerInput.h"
 #include "../layers/lightMap.h"
 #include "../ui/ui.h"
+#include "../network/network.h"
 
 /**
  * @class Game
@@ -33,12 +34,23 @@ public:
     bool setColor() {color = !(color);}
     
     friend class PlayerInput;
+    friend class GameServer;
+    friend class GameClient;
     friend class Ui;
     PlayerInput playerInput;
     bool mousePressed = false;
     bool color = true; //false = black true = white
 
+    //serverclient
+    void startServer();
+    void startClient();
+    bool isServer() const;
+    void setServerMode(bool mode);
+
 protected:
+    bool serverMode = false;
+    std::unique_ptr<GameServer> myServer;
+    std::unique_ptr<GameClient> myClient;
     void initVariable();
     void initWindow();
     void initGrid(std::vector<std::string> myVect);

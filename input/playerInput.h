@@ -26,4 +26,4 @@ public:
     }
 };
 
-#endif // PLAYERINPUT_H
+#endif

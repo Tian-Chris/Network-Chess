@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # Project name
-project(cttss LANGUAGES CXX)
+project(NetworkChess LANGUAGES CXX)
 
 # Set runtime output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -19,7 +19,7 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 FetchContent_MakeAvailable(SFML)
 
 # Add executable
-add_executable(cttss
+add_executable(network_chess
     main.cpp
     game/game.cpp
     network/network.cpp
@@ -41,7 +41,7 @@ add_executable(cttss
 )
 
 # Set C++ standard
-target_compile_features(cttss PRIVATE cxx_std_17)
+target_compile_features(network_chess PRIVATE cxx_std_17)
 
 # Link SFML libraries
-target_link_libraries(cttss PRIVATE SFML::Graphics)
+target_link_libraries(network_chess PRIVATE SFML::Graphics)

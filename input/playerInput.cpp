@@ -41,6 +41,16 @@ void PlayerInput::handleKeyPress(const sf::Event::KeyPressed& keyPressed) {
 }
 
 void PlayerInput::handleMouseClick(sf::Vector2f mousePosition) {
+
+if (mousePosition.x < 0 || mousePosition.y < 0 || 
+    mousePosition.x >= game->entitiesList[0].size() * 32 || 
+    mousePosition.y >= game->entitiesList.size() * 32) 
+    
+{
+    std::cout << "Invalid mouse position" << std::endl;
+    return;
+}
+
 player = game->getPlayer();
 int x = static_cast<int>(mousePosition.x) / 32;
 int y = static_cast<int>(mousePosition.y) / 32;
@@ -75,7 +85,7 @@ else
 {
     if(game->entitiesList[y][x] == nullptr || game->entitiesList[y][x]->getColor() != player->getColor())
     {
-        Move move = {player->getY(), player->getX(), y, x};
+        Move move = {player->getY(), player->getX(), y, x, player->getColor()};
         // std::cout << "Attempting move from: " << move.fromRow << " " << move.fromCol << " to: " << move.toRow << " " << move.toCol << std::endl;
         //std::cout << "Player color: " << player->getColor() << std::endl;
 
@@ -86,8 +96,13 @@ else
             return;
         }
 
-        if(checkMove(game->entitiesList, move, player->getColor(), true))
+        if(checkMove(game->entitiesList, move, true))
         {
+            if (game->isServer()) {
+                game->myServer->sendMove(move);
+            } else {
+                game->myClient->sendMove(move);
+            }
             //deselects player
             game->setPlayer(nullptr);
             game->setColor();

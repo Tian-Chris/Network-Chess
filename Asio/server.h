@@ -13,25 +13,14 @@ using asio::ip::tcp;
 
 class Server {
 public:
-    // Constructor that initializes the acceptor with the given port
     Server(unsigned short port);
-    
-    // Destructor
     ~Server();
-    
-    // Starts the server
     bool Start();
-    
-    // Stops the server
     void Stop();
-    
-    // Accepts incoming client connections
     virtual void do_accept();
-
-    // Sends a message to a specific client
     void sendMessage(std::shared_ptr<Connection> client, const Message& myMessage);
     
-    // Input message queue
+    // Input  queue
     tsqueue inputMessages;
     
     // List of active client connections

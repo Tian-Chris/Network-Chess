@@ -64,10 +64,11 @@ int main()
             }
         }
 
+        Game game;
+
         if(myState == state::IPInput) {}
-        
         if(myState == state::GameClient) {
-            GameClient game;
+            game.startClient();
             
             while (game.getWindowIsOpen())
             {
@@ -79,7 +80,7 @@ int main()
 
         if(myState == state::GameServer)
         {
-            Game game;
+            game.startServer();
             while (game.getWindowIsOpen())
             {
                 game.update();

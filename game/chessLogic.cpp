@@ -3,17 +3,17 @@
 #include "../entities/entities.h"
 
 
-bool checkMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool color, bool performMove) {
+bool checkMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool performMove) {
     Entity* piece = board[move.fromRow][move.fromCol].get();
 
     if (piece == nullptr) {
         std::cerr << "Error at checkMove: No piece at the starting position (" << move.fromRow << ", " << move.fromCol << ")" << std::endl;
         return false;
     }
-    if (board[move.toRow][move.toCol] != nullptr && board[move.toRow][move.toCol]->getColor() == color) {
+    if (board[move.toRow][move.toCol] != nullptr && board[move.toRow][move.toCol]->getColor() == move.playerColor) {
         return false;
     }
-    if (!isValidMove(board, move, color)) {
+    if (!isValidMove(board, move)) {
         return false;
     }
 
@@ -21,7 +21,7 @@ bool checkMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move mo
     board[move.toRow][move.toCol] = std::move(board[move.fromRow][move.fromCol]);
     board[move.fromRow][move.fromCol] = nullptr;
 
-    bool kingCheck = isKingInCheck(board, color);
+    bool kingCheck = isKingInCheck(board, move.playerColor);
 
     board[move.fromRow][move.fromCol] = std::move(board[move.toRow][move.toCol]);
     board[move.toRow][move.toCol] = std::move(temp);
@@ -58,7 +58,7 @@ bool isPathClear(std::vector<std::vector<std::unique_ptr<Entity>>>& board, int f
     return true;
 }
 
-bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move, bool myColor) {
+bool isValidMove(std::vector<std::vector<std::unique_ptr<Entity>>>& board, Move move) {
 
     Entity* piece = board[move.fromRow][move.fromCol].get();
 
@@ -165,8 +165,8 @@ bool isKingInCheck(std::vector<std::vector<std::unique_ptr<Entity>>>& board, boo
     for (int row = 0; row < board.size(); ++row) {
         for (int col = 0; col < board[row].size(); ++col) {
             if (board[row][col] != nullptr && board[row][col]->getColor() != kingColor) {
-                Move move = {row, col, kingRow, kingCol};
-                if (isValidMove(board, move, board[row][col]->getColor())) {
+                Move move = {row, col, kingRow, kingCol, kingColor};
+                if (isValidMove(board, move)) {
                     return true; 
                 }
             }
@@ -202,8 +202,8 @@ bool isKingInCheckmate(std::vector<std::vector<std::unique_ptr<Entity>>>& board,
             int newCol = kingCol + dCol;
 
             if (newRow >= 0 && newRow < board.size() && newCol >= 0 && newCol < board[newRow].size()) {
-                Move move = {kingRow, kingCol, newRow, newCol};
-                if (checkMove(board, move, kingColor, false)) {
+                Move move = {kingRow, kingCol, newRow, newCol, kingColor};
+                if (checkMove(board, move, false)) {
                     return false; 
                 }
             }
@@ -216,8 +216,8 @@ bool isKingInCheckmate(std::vector<std::vector<std::unique_ptr<Entity>>>& board,
             if (board[row][col] != nullptr && board[row][col]->getColor() == kingColor) {
                 for (int targetRow = 0; targetRow < board.size(); ++targetRow) {
                     for (int targetCol = 0; targetCol < board[targetRow].size(); ++targetCol) {
-                        Move move = {row, col, targetRow, targetCol};
-                        if (checkMove(board, move, kingColor, false)) {
+                        Move move = {row, col, targetRow, targetCol, kingColor};
+                        if (checkMove(board, move, false)) {
                             return false; 
                         }
                     }

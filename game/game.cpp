@@ -11,7 +11,6 @@ Game::Game()        :
     viewChess(sf::FloatRect({0.f, 0.f}, {256.f * aspectRatio, 256.f})),
     playerInput(this),
     player(nullptr)
-
 {
     this -> initVariable();
     this -> initWindow();
@@ -32,7 +31,7 @@ void Game::initVariable() {
 
 void Game::initWindow()
 {
-    this->window = new sf::RenderWindow(videoMode, "CTTSS");
+    this->window = new sf::RenderWindow(videoMode, "Network Chess in SFML");
     this->window->setView(viewChess);
 
 }
@@ -117,6 +116,14 @@ void Game::pollEvents()
 void Game::update()
 {
     this->pollEvents();
+    if(this->isServer())
+    {
+        myServer->processMove();
+    }
+    else
+    {
+        myClient->processMove();
+    }
 }
 
 void Game::render() {
@@ -174,13 +181,34 @@ void Game::loadMap() {
     }
 }
 
+bool Game::isServer() const { 
+    return serverMode; 
+}
+
+void Game::setServerMode(bool mode) { 
+    serverMode = mode; 
+}
+
+void Game::startServer() { 
+    myServer = std::make_unique<GameServer>(12345, this);
+    serverMode = true; 
+    myServer->GameServerStart(); 
+}
+
+void Game::startClient() { 
+    myClient = std::make_unique<GameClient>(this);
+    serverMode = false; 
+    myClient->GameClientConnect("127.0.0.1", 12345); 
+}
+
+
 
 // Start Menu
 StartMenu::StartMenu(): videoMode({1280, 800}),
                         font("text/Arial.ttf"),
                         text(font)
 {
-    this->window = new sf::RenderWindow(videoMode, "CTTSS");
+    this->window = new sf::RenderWindow(videoMode, "Network Chess in SFML");
     text.setString("Start");  // Set the text string
     text.setCharacterSize(50);  // Set the text size
     text.setFillColor(sf::Color::White);  // Set the text color

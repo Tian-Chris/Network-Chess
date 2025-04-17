@@ -2,13 +2,11 @@
 #include <asio.hpp>
 #include <iostream>
 
-// Constructor
 Connection::Connection(asio::io_context& inputContext, asio::ip::tcp::socket inputSocket, tsqueue& queue)
     : io_context(inputContext), socket(std::move(inputSocket)), inputQueue(queue)
 {
 }
 
-// Used to connect to servers
 void Connection::connect(const asio::ip::tcp::resolver::results_type& endpoints) {
     asio::async_connect(socket, endpoints,
         [this](std::error_code ec, asio::ip::tcp::endpoint endpoint) {
@@ -19,19 +17,16 @@ void Connection::connect(const asio::ip::tcp::resolver::results_type& endpoints)
         });
 }
 
-// Disconnect the connection
 void Connection::disconnect() {
     if (isConnected()) {
         asio::post(io_context, [this]() { socket.close(); });
     }
 }
 
-// Check if connected
 bool Connection::isConnected() const {
     return socket.is_open();
 }
 
-// Send message to the output queue
 void Connection::send(const Message& message) {
     asio::post(io_context,
         [this, message]() {
@@ -44,7 +39,6 @@ void Connection::send(const Message& message) {
         });
 }
 
-// Write data to the socket
 void Connection::write() {
     // Write size
     asio::async_write(socket, asio::buffer(&outputQueue.front().size, sizeof(outputQueue.front().size)),
@@ -75,7 +69,6 @@ void Connection::write() {
         });
 }
 
-// Read data from the socket
 void Connection::read() {
     asio::async_read(socket, asio::buffer(&temp.size, sizeof(temp.size)),
         [this](std::error_code ec, std::size_t length) {
