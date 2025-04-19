@@ -21,8 +21,8 @@ int main()
         //for start menu
         if(myState == state::TitleScreen)
         {
-            Button button1("images/grass.png", "images/wall.png", "Server", {50.f, 50.f});
-            Button button2("images/grass.png", "images/wall.png", "Client", {200.f, 50.f});
+            Button button1("../../images/grass.png", "../../images/wall.png", "Server", {50.f, 50.f});
+            Button button2("../../images/grass.png", "../../images/wall.png", "Client", {200.f, 50.f});
             StartMenu StartMenu;
             while(StartMenu.window->isOpen())
             {

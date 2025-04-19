@@ -5,8 +5,8 @@
 
 
 Ui::Ui(Game* game): 
-        healthbar("images/hpFull.png", 10, {16,0}),
-        inventory("images/inventory.png", 10, {16,200}),
+        healthbar("../../images/hpFull.png", 10, {16,0}),
+        inventory("../../images/inventory.png", 10, {16,200}),
         myWindow(nullptr),
         inputCatcher(this),
         game(game),
@@ -25,11 +25,11 @@ void Ui::UpdateHealth()
 {
     if(hp == 10)
     {
-        healthbar.reset("images/hpFull.png");
+        healthbar.reset("../../images/hpFull.png");
     }
     else if(hp == 0)
     {
-        healthbar.reset("images/hpEmpty.png");
+        healthbar.reset("../../images/hpEmpty.png");
     }
 }
 

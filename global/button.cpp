@@ -6,7 +6,7 @@ Button::Button(const char* normalStr, const char* clickedStr, std::string words,
       textureC(clickedStr),
       normal(textureN),
       clicked(textureC),
-      font("text/Arial.ttf"),
+      font("../../text/Arial.ttf"),
       text(font) 
 {
     this->currentSpr = &this->normal;

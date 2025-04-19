@@ -24,7 +24,7 @@ Layer::~Layer() {
 
 void Layer::loadFromFile(const std::string& fileName) {
     clearLayer();
-    std::string fullName = "text/" + fileName;
+    std::string fullName = "../../text/" + fileName;
     std::ifstream file(fullName);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file " << fileName << std::endl;
@@ -40,7 +40,7 @@ void Layer::loadFromFile(const std::string& fileName) {
     std::string textureFileName;
     while (textureStream >> textureID >> textureFileName) {
         // Prepend the folder path
-        std::string fullPath = "images/" + textureFileName;
+        std::string fullPath = "../../images/" + textureFileName;
     
         // Load the texture and store it in the map
         sf::Texture texture;

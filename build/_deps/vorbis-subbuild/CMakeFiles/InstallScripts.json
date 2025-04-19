@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/chris/network_chess/build/_deps/vorbis-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

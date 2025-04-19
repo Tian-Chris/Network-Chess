@@ -1,0 +1,3 @@
+/Users/chris/network_chess/build/_deps/sfml-subbuild/CMakeFiles/sfml-populate.dir
+/Users/chris/network_chess/build/_deps/sfml-subbuild/CMakeFiles/edit_cache.dir
+/Users/chris/network_chess/build/_deps/sfml-subbuild/CMakeFiles/rebuild_cache.dir

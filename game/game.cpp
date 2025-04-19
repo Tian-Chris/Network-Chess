@@ -52,7 +52,7 @@ void Game::initEntities(const std::string& fileName) {
         row.resize(8); // No need to pass nullptr; default initialization works
     }
     
-    std::string fullName = "text/" + fileName;
+    std::string fullName = "../../text/" + fileName;
     std::ifstream file(fullName);
     if (!file.is_open()) {
         std::cerr << "Error: Could not open file " << fileName << std::endl;
@@ -72,7 +72,7 @@ void Game::initEntities(const std::string& fileName) {
         }
 
         // Create a new Entity object
-        auto entityPtr = std::make_unique<Entity>("images/" + imageName, sf::Vector2f(x * gridSize, y * gridSize), x, y, entityName);
+        auto entityPtr = std::make_unique<Entity>("../../images/" + imageName, sf::Vector2f(x * gridSize, y * gridSize), x, y, entityName);
 
         // Store the entity in the vector
         entitiesList[y][x] = std::move(entityPtr);
@@ -144,7 +144,7 @@ void Game::drawMap() {
 
 void Game::drawSelected() {
     sf::Texture texture;
-    if (!texture.loadFromFile("images/selected.png")) {
+    if (!texture.loadFromFile("../../images/selected.png")) {
         throw std::runtime_error("Failed to load texture: images/selected.png");
     }
     sf::Sprite sprite(texture);
@@ -205,7 +205,7 @@ void Game::startClient() {
 
 // Start Menu
 StartMenu::StartMenu(): videoMode({1280, 800}),
-                        font("text/Arial.ttf"),
+                        font("../../text/Arial.ttf"),
                         text(font)
 {
     this->window = new sf::RenderWindow(videoMode, "Network Chess in SFML");

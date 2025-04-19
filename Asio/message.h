@@ -43,7 +43,7 @@ public:
 
     void readFile(std::string filename)
     {
-        std::ifstream file("text/" + filename);
+        std::ifstream file("../../text/" + filename);
         if (!file) {
             std::cerr << "Failed to open file.\n";
             return;
