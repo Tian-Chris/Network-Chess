@@ -13,6 +13,7 @@ public:
     GameServer(Game* game);
 
     void GameServerStart();
+    void startGame();
     void do_accept() override;
     void sendMove(const Move& move);
     void sendMap(std::shared_ptr<Connection> client);

@@ -7,7 +7,9 @@ enum messageTypes {
     mapObstacles,
     entityList,
     entityUpdate,
-    move
+    move,
+    turn,
+    color
 };
 GameServer::GameServer(Game* game): Server(12345), game(game){};
 GameServer::GameServer(unsigned short port, Game* game): Server(port), game(game) {};
@@ -21,11 +23,48 @@ void GameServer::do_accept() {
                 Connections.push_back(std::move(connection));
                 sendMap(Connections.back());
                 Connections.back()->read();
+                startGame();
             } else {
                 std::cout << "SERVER: Connection Error: " << ec.message() << "\n";
             }
             do_accept();
         });
+}
+
+void GameServer::startGame() {
+    if(rand() % 2 == 0)
+    {
+        game->turn = false;
+        game->color = false;
+        Message color;
+        color.setType(messageTypes::color);
+        color.setMessage(std::vector<char>{'w', 'h', 'i', 't', 'e'});
+        color.setSize(color.message.size());
+        Message turn;
+        turn.setType(messageTypes::turn);
+        turn.setMessage(std::vector<char>{'t', 'r', 'u', 'e'});
+        turn.setSize(turn.message.size()); 
+        sendMessage(Connections.back(), turn);
+        sendMessage(Connections.back(), color);
+        std::cout << "clien turn!" << std::endl;
+    }
+    else
+    {
+        game->turn = true;
+        game->color = true;
+        Message color;
+        color.setType(messageTypes::color);
+        color.setMessage(std::vector<char>{'b', 'l', 'a', 'c', 'k'});
+        color.setSize(color.message.size());
+        Message turn;
+        turn.setType(messageTypes::turn);
+        turn.setMessage(std::vector<char>{'f', 'a', 'l', 's', 'e'});
+        turn.setSize(turn.message.size());
+        sendMessage(Connections.back(), turn);
+        sendMessage(Connections.back(), color);
+        std::cout << "server turn!" << std::endl;
+    }
+    std::cout << "Game started!" << std::endl;
 }
 
 void GameServer::sendMap(std::shared_ptr<Connection> client) {
@@ -64,6 +103,12 @@ void GameServer::sendMove(const Move& move) {
     }
 
     sendMessage(Connections.back(), sendMove); // Only sends to one client for now
+    Message turn;
+    turn.setType(messageTypes::turn);
+    turn.setMessage(std::vector<char>{'t', 'r', 'u', 'e'});
+    turn.setSize(turn.message.size());
+    sendMessage(Connections.back(), turn); // Changed from Send(turn) to sendMessage
+    cout << "server sent turn" << endl;
 }
 
 void GameServer::processMove() {
@@ -80,6 +125,34 @@ void GameServer::processMove() {
             } else {
                 std::cerr << "Invalid move received from client!" << std::endl;
             }
+        }
+        else if(inputMessages.front().getType() == messageTypes::turn)
+        {
+            cout << "inside turn server" << endl;
+            if(inputMessages.front().message == std::vector<char>{'t', 'r', 'u', 'e'})
+            {
+                cout << "server true" << endl;
+                game->turn = true;
+            }
+            else
+            {
+                std::cout << "Message content: " << std::string(inputMessages.front().message.begin(), inputMessages.front().message.end()) << std::endl;
+                game->turn = false;
+            }
+            inputMessages.pop_front();
+        }
+        else if(inputMessages.front().getType() == messageTypes::color)
+        {
+            if(inputMessages.front().message == std::vector<char>{'w', 'h', 'i', 't', 'e'})
+            {
+                game->color = true;
+            }
+            else
+            {
+                game->color = false;
+            }
+            inputMessages.pop_front();
+
         }
         else {
             std::cerr << "Invalid message type received from client!" << std::endl;
@@ -112,19 +185,63 @@ void GameClient::sendMove(const Move& move) {
     sendMove.setType(messageTypes::move);
     sendMove.setSize(temp.size());
     Send(sendMove);
+    Message turn;
+    turn.setType(messageTypes::turn);
+    turn.setMessage(std::vector<char>{'t', 'r', 'u', 'e'});
+    turn.setSize(turn.message.size());
+    Send(turn);
+    cout << "client sent turn" << endl;
 }
 
 void GameClient::processMove() {
     while (!inputMessages.empty()) {
-        Message msg = inputMessages.front();
-        inputMessages.pop_front();
+        if(inputMessages.front().getType() == messageTypes::move)
+        {
+            Message msg = inputMessages.front();
+            inputMessages.pop_front();
 
-        std::string temp(msg.message.begin(), msg.message.end());
-        Move move = Move::deserialize(temp);
+            std::string temp(msg.message.begin(), msg.message.end());
+            Move move = Move::deserialize(temp);
 
-        if (checkMove(game->entitiesList, move, true)) {
-        } else {
-            std::cerr << "Invalid move received from server!" << std::endl;
+            if (checkMove(game->entitiesList, move, true)) {
+            } else {
+                std::cerr << "Invalid move received from client!" << std::endl;
+            }
+        }
+        else if(inputMessages.front().getType() == messageTypes::turn)
+        {
+            cout << "inside turn client" << endl;
+
+            if(inputMessages.front().message == std::vector<char>{'t', 'r', 'u', 'e'})
+            {
+                std::cout << "client true" << std::endl;
+                game->turn = true;
+            }
+            else
+            {
+                std::cout << "Message content: " << std::string(inputMessages.front().message.begin(), inputMessages.front().message.end()) << std::endl;
+                game->turn = false;
+            }
+            inputMessages.pop_front();
+        }
+        else if(inputMessages.front().getType() == messageTypes::color)
+        {
+            if(inputMessages.front().message == std::vector<char>{'w', 'h', 'i', 't', 'e'})
+            {
+                game->color = true;
+            }
+            else
+            {
+                game->color = false;
+            }
+            inputMessages.pop_front();
+        }
+        else {
+            std::cerr << "Invalid message type received from sserver!" << std::endl;
+            std::cout << "Message type: " << inputMessages.front().getType() << std::endl;
+            std::cout << "Message content: " << std::string(inputMessages.front().message.begin(), inputMessages.front().message.end()) << std::endl;
+            std::cout << "Message size: " << inputMessages.front().message.size() << std::endl;
+            inputMessages.pop_front();
         }
     }
 }

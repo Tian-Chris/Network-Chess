@@ -40,6 +40,7 @@ public:
     PlayerInput playerInput;
     bool mousePressed = false;
     bool color = true; //false = black true = white
+    bool turn = true;
 
     //serverclient
     void startServer();

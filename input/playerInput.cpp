@@ -83,7 +83,7 @@ if(player == nullptr)
 }
 else 
 {
-    if(game->entitiesList[y][x] == nullptr || game->entitiesList[y][x]->getColor() != player->getColor())
+    if((game->entitiesList[y][x] == nullptr || game->entitiesList[y][x]->getColor() != player->getColor()) && game->turn == true)
     {
         Move move = {player->getY(), player->getX(), y, x, player->getColor()};
         // std::cout << "Attempting move from: " << move.fromRow << " " << move.fromCol << " to: " << move.toRow << " " << move.toCol << std::endl;
@@ -105,7 +105,7 @@ else
             }
             //deselects player
             game->setPlayer(nullptr);
-            game->setColor();
+            game->turn = false;
             return;
         }
         else
